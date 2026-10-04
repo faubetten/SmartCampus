@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository
 public interface CampusNodeRepository extends JpaRepository<CampusNode, Long> {
+    // Supports floor-specific map and administration queries.
     List<CampusNode> findByBuildingIdAndFloorNumber(Long buildingId, Integer floorNumber);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    // Checks for overlapping reservations for a specific room
+    // Two bookings overlap when each starts before the other one ends.
     @Query("SELECT r FROM Reservation r WHERE r.roomId = :roomId AND r.status IN ('CONFIRMED', 'ACTIVE') " +
            "AND ((r.startTime < :endTime) AND (r.endTime > :startTime))")
     List<Reservation> findConflictingReservations(

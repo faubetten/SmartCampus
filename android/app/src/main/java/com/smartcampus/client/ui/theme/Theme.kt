@@ -36,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun SmartCampusClientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    // Android 12 and later can derive colors from the system theme.
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {

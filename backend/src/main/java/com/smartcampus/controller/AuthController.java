@@ -36,11 +36,13 @@ public class AuthController {
     }
 
     public static class LoginRequest {
+        // Credentials received from the login form.
         public String email;
         public String password;
     }
 
     public static class RegisterRequest {
+        // Basic fields needed to create a student account.
         public String name;
         public String email;
         public String password;
@@ -60,6 +62,7 @@ public class AuthController {
         System.out.println("[HIT] /api/auth/login reached for email: " + loginRequest.email);
 
         try {
+            // Spring Security checks the password before a token is issued.
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.email,
@@ -81,6 +84,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+        // Registration is restricted to the default STUDENT role.
         if (userRepository.findByEmail(registerRequest.email).isPresent()) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }

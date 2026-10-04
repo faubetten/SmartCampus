@@ -25,12 +25,13 @@ public class CampusNode {
     private BigDecimal coordY;
 
     @Column(name = "node_type", nullable = false)
-    private String nodeType; // e.g., 'CORRIDOR', 'ROOM', 'STAIRS', 'ELEVATOR'
+    // Describes the location's role in the navigation graph.
+    private String nodeType;
 
     @Column(name = "is_accessible", nullable = false)
     private Boolean isAccessible = true;
 
-    // Getters and Setters
+    // Accessors used when mapping database rows and serializing route results.
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Integer getFloorNumber() { return floorNumber; }

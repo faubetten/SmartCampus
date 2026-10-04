@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 @Table(name = "campus_edges")
 public class CampusEdge {
 
+    // Database identifier for this directed connection in the campus graph.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "edge_id")
@@ -24,7 +25,7 @@ public class CampusEdge {
     @Column(name = "requires_stairs", nullable = false)
     private Boolean requiresStairs = false;
 
-    // Getters and Setters
+    // Accessors used by JPA and by the pathfinding service.
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getSourceNodeId() { return sourceNodeId; }

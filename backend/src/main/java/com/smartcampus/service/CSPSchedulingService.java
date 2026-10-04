@@ -21,7 +21,7 @@ public class CSPSchedulingService {
     }
 
     /**
-     * CSP Formulation Result Holder
+     * Carries either the selected room or a short explanation of failure.
      */
     public static class CSPResult {
         public boolean success;
@@ -47,22 +47,22 @@ public class CSPSchedulingService {
     public CSPResult solveRoomAllocationCSP(int requestedCapacity, String roomType, 
                                             LocalDateTime startTime, LocalDateTime endTime) {
         
-        // Step 1: Define Domain (D) -> Fetch all rooms matching basic type and capacity
+        // Start with rooms that satisfy the static capacity and type constraints.
         List<Room> domainRooms = roomRepository.findByCapacityGreaterThanEqualAndRoomType(requestedCapacity, roomType);
 
         if (domainRooms.isEmpty()) {
             return new CSPResult(false, null, "CSP Failed: No rooms match the requested capacity and type domain.");
         }
 
-        // Step 2: Apply Constraint Propagation & Backtracking Search
+        // Test each candidate until one satisfies the time constraint.
         for (Room candidateRoom : domainRooms) {
             
-            // Constraint 1: Hard Capacity Check (redundant safety check)
+            // Keep a defensive check even though the repository already filters capacity.
             if (candidateRoom.getCapacity() < requestedCapacity) {
                 continue; // Violates constraint, prune from domain
             }
 
-            // Constraint 2: Temporal Non-Overlap Check (Checking active database reservations)
+            // A room cannot be selected when a confirmed or active reservation overlaps.
             List<org.springframework.data.jpa.repository.query.JpaQueryMethodFactory> conflicts = null; // type safety
             var conflictingBookings = reservationRepository.findConflictingReservations(
                 candidateRoom.getId(), startTime, endTime

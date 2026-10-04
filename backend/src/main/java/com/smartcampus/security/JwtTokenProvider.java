@@ -14,13 +14,16 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final String jwtSecret = "SmartCampusSuperSecretKeyForJWTAuthentication2026SecureKey!";
-    private final int jwtExpirationMs = 86400000; // 24 hours
+    // Tokens remain valid for one day after they are issued.
+    private final int jwtExpirationMs = 86400000;
 
+    // Builds the signing key used both when creating and validating tokens.
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(Authentication authentication) {
+        // The subject is the authenticated user's email.
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
@@ -34,6 +37,7 @@ public class JwtTokenProvider {
     }
 
     public String getEmailFromJWT(String token) {
+        // Parsing also verifies the signature before the subject is trusted.
         Claims claims = Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
@@ -47,7 +51,7 @@ public class JwtTokenProvider {
             Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(authToken);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            // Invalid signature or expired token
+            // Invalid signatures, malformed tokens, and expired tokens are rejected.
         }
         return false;
     }

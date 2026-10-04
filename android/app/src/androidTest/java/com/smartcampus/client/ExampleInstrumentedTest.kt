@@ -17,7 +17,7 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
+        // Confirms that the instrumented test is connected to this application.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.smartcampus.client", appContext.packageName)
     }

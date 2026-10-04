@@ -24,6 +24,7 @@ public class SchedulingController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
 
+        // The service applies capacity, type, and time-overlap constraints.
         CSPSchedulingService.CSPResult result = cspSchedulingService.solveRoomAllocationCSP(
                 capacity, roomType, startTime, endTime
         );

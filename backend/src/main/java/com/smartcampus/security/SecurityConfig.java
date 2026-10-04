@@ -50,10 +50,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // JWT authentication is stateless, so server-side sessions and CSRF tokens are not used.
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/health").permitAll() // Open to all methods (GET, POST, OPTIONS)
+                // Login, registration, and health checks must be reachable without a token.
+                .requestMatchers("/api/auth/**", "/health").permitAll()
                 .requestMatchers("/api/navigation/**", "/api/scheduling/**").authenticated()
                 .anyRequest().authenticated()
             )

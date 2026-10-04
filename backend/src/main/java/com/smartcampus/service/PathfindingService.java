@@ -25,8 +25,9 @@ public class PathfindingService {
      */
     private static class SearchNode implements Comparable<SearchNode> {
         CampusNode node;
-        double gScore; // Cost from start to current node
-        double fScore; // Estimated total cost (gScore + heuristic)
+        // gScore is the known cost; fScore adds the estimated remaining cost.
+        double gScore;
+        double fScore;
         SearchNode cameFrom;
 
         public SearchNode(CampusNode node, double gScore, double fScore, SearchNode cameFrom) {
@@ -70,18 +71,18 @@ public class PathfindingService {
         while (!openSet.isEmpty()) {
             SearchNode current = openSet.poll();
 
-            // If we reached the destination, reconstruct and return path
+            // A* stops when the lowest-cost candidate is the destination.
             if (current.node.getId().equals(targetNode.getId())) {
                 return reconstructPath(current);
             }
 
             closedSet.add(current.node.getId());
 
-            // Fetch outgoing edges from current node
+            // Expand the graph using only connections leaving the current node.
             List<CampusEdge> edges = edgeRepository.findBySourceNodeId(current.node.getId());
 
             for (CampusEdge edge : edges) {
-                // Skip stairs if accessibility filter is requested
+                // Accessibility mode excludes edges that require stairs.
                 if (accessibleOnly && edge.getRequiresStairs()) {
                     continue;
                 }
@@ -111,18 +112,19 @@ public class PathfindingService {
             }
         }
 
-        return Collections.emptyList(); // No path found
+        // An empty result means the destination is unreachable under the selected rules.
+        return Collections.emptyList();
     }
 
     /**
-     * Heuristic function: Euclidean distance combined with floor level penalty.
+     * Estimates remaining cost from coordinates and floor difference.
      */
     private double heuristic(CampusNode a, CampusNode b) {
         double dx = a.getCoordX().subtract(b.getCoordX()).doubleValue();
         double dy = a.getCoordY().subtract(b.getCoordY()).doubleValue();
         double spatialDistance = Math.sqrt((dx * dx) + (dy * dy));
 
-        // Add a penalty if changing floors without an elevator
+        // Floor changes receive a fixed penalty to guide the search vertically.
         int floorDiff = Math.abs(a.getFloorNumber() - b.getFloorNumber());
         double floorPenalty = floorDiff * 10.0;
 

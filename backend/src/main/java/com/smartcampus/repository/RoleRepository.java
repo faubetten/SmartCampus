@@ -7,5 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    // Roles are looked up by their stable application name during registration.
     Optional<Role> findByRoleName(String roleName);
 }

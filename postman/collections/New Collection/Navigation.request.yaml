@@ -1,5 +1,5 @@
 $kind: http-request
-description: ""
+description: "Requests an A* route between two campus nodes."
 url: http://localhost:8080/api/navigation/route?startId=1&targetId=5&accessibleOnly=false
 method: GET
 queryParams:

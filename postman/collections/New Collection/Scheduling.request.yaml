@@ -1,5 +1,5 @@
 $kind: http-request
-description: ""
+description: "Requests a room that satisfies capacity, type, and time constraints."
 url: http://localhost:8080/api/scheduling/allocate?capacity=30&roomType=LAB&startTime=2026-10-05T09:00:00&endTime=2026-10-05T11:00:00
 method: POST
 queryParams:

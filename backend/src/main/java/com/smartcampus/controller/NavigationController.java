@@ -23,6 +23,7 @@ public class NavigationController {
             @RequestParam Long targetId,
             @RequestParam(defaultValue = "false") boolean accessibleOnly) {
         
+        // Delegate graph search to the service so the controller stays focused on HTTP handling.
         List<CampusNode> route = pathfindingService.findShortestPath(startId, targetId, accessibleOnly);
         
         if (route.isEmpty()) {

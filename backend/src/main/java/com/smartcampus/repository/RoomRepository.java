@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    // Forms the initial room domain for the scheduling constraints.
     List<Room> findByCapacityGreaterThanEqualAndRoomType(Integer capacity, String roomType);
 }

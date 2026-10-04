@@ -15,7 +15,7 @@ public class Role {
 
     private String description;
 
-    // Getters and Setters
+    // Accessors used by JPA and user authentication.
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getRoleName() { return roleName; }

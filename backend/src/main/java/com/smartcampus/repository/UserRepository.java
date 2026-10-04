@@ -7,5 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    // Email is the login identifier and is unique in the database.
     Optional<User> findByEmail(String email);
 }

@@ -25,9 +25,10 @@ public class Reservation {
     private LocalDateTime endTime;
 
     @Column(name = "status", nullable = false)
-    private String status = "CONFIRMED"; // 'CONFIRMED', 'ACTIVE', 'CANCELLED'
+    // Only CONFIRMED and ACTIVE reservations block a new booking.
+    private String status = "CONFIRMED";
 
-    // Getters and Setters
+    // Accessors used by JPA and reservation conflict queries.
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getUserId() { return userId; }

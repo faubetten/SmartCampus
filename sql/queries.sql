@@ -50,7 +50,7 @@ ORDER BY utilization_rank;
 -- QUERY 3: Spatial Graph Edge & Adjacency Lookup (A* Pathfinding Support)
 -- Purpose: Retrieves walkable paths, physical distances, and accessibility constraints 
 --          between connected campus nodes to feed the backend A* routing engine.
--- Evaluates: Integration between Discrete Mathematics graph structures and database storage[cite: 1].
+-- Evaluates: Integration between graph structures and database storage.
 -- -----------------------------------------------------------------------------
 
 SELECT 
@@ -73,7 +73,7 @@ ORDER BY e.weight_distance ASC;
 -- QUERY 4: Security & Access Control Audit (GDPR & Check-In Success Rate)
 -- Purpose: Evaluates verification methods (QR vs. BLE) and calculates success rates 
 --          for access control logging.
--- Evaluates: Security metrics and audit trail generation[cite: 2].
+-- Evaluates: Security metrics and audit trail generation.
 -- -----------------------------------------------------------------------------
 
 SELECT 
@@ -89,7 +89,7 @@ GROUP BY al.verification_method;
 -- -----------------------------------------------------------------------------
 -- QUERY 5: Active User Reservations with RBAC & Role Filtering
 -- Purpose: Subquery filtering users by role ('STUDENT' vs 'PROFESSOR') with active bookings.
--- Evaluates: Role-Based Access Control (RBAC) persistence and filtering[cite: 2].
+-- Evaluates: Role-Based Access Control (RBAC) persistence and filtering.
 -- -----------------------------------------------------------------------------
 
 SELECT 

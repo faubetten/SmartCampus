@@ -17,17 +17,19 @@ import org.springframework.beans.factory.annotation.Value;
 @RestController
 public class SmartCampusApplication {
 
+    // Identifies the backend instance returned by the health endpoint.
     @Value("${INSTANCE_ID:Unknown-Node}")
     private String instanceId;
 
+    // Used by the load-balancer test to show which node handled a request.
     @GetMapping("/health")
     public String healthCheck() {
         return "SmartCampus API is online, handled by: " + instanceId;
     }
 
     /**
-     * Automated Startup Seeder: Safely provisions default student and professor accounts 
-     * using true runtime-generated BCrypt hashes if they don't already exist.
+     * Creates demo accounts when the application starts, without duplicating
+     * users that are already present in the database.
      */
     @Bean
     CommandLineRunner initDefaultUsers(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -37,7 +39,7 @@ public class SmartCampusApplication {
 
             String defaultPassword = "SecurePass123!";
 
-            // Seed demo accounts safely
+            // These accounts make the development and demonstration environment usable.
             createIfNotExists(userRepository, passwordEncoder, "João Silva", "joao.silva@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Beatriz Costa", "beatriz.costa@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Dr. Andreia Artifice", "andreia.artifice@universidadeeuropeia.pt", defaultPassword, professorRole);
@@ -50,7 +52,7 @@ public class SmartCampusApplication {
             User user = new User();
             user.setName(name);
             user.setEmail(email);
-            user.setPasswordHash(encoder.encode(rawPass)); // Secure runtime hash generation
+            // Store only a BCrypt hash; the original password is never persisted.
             user.setRole(role);
             repo.save(user);
             System.out.println("[INIT] Seeded default user with runtime BCrypt hash: " + email);
@@ -58,6 +60,7 @@ public class SmartCampusApplication {
     }
 
     public static void main(String[] args) {
+        // Starts Spring Boot and registers the application components.
         SpringApplication.run(SmartCampusApplication.class, args);
     }
 }

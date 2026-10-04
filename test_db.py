@@ -11,6 +11,7 @@ DB_CONFIG = {
 }
 
 def test_database_connection():
+    # Fail early because the remaining checks require a live PostgreSQL connection.
     print("[-] Testing PostgreSQL Connection...")
     try:
         conn = psycopg2.connect(**DB_CONFIG)
@@ -21,6 +22,7 @@ def test_database_connection():
         sys.exit(1)
 
 def test_table_integrity(conn):
+    # Minimum counts confirm that the sample dataset was loaded completely.
     print("\n[-] Verifying Table Row Counts (Data Integrity)...")
     expected_counts = {
         "roles": 3,
@@ -48,6 +50,7 @@ def test_table_integrity(conn):
         print("[!] WARNING: Some tables did not meet expected row counts. Check populate.sql.")
 
 def test_analytical_queries(conn):
+    # Run a representative join used by the project's reporting queries.
     print("\n[-] Executing Analytical Queries (`queries.sql` validation)...")
     
     # Query 1: Facility Resource Inventory

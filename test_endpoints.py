@@ -8,6 +8,7 @@ def test_load_balancer_health():
     print("TEST 1: Testing Nginx Load Balancer & Node Redundancy")
     print("==================================================")
     
+    # Different instance identifiers prove that Nginx forwards requests to both nodes.
     nodes_hit = set()
     for i in range(6):
         try:
@@ -31,7 +32,7 @@ def test_navigation_endpoint():
     print("TEST 2: Testing A* Pathfinding Endpoint (/api/navigation/route)")
     print("==================================================")
     
-    # Route from Node 1 (Entrance) to Node 3 (Room B1.01) using seed data
+    # The seeded graph connects the main entrance (1) to study room B1.01 (3).
     url = f"{BASE_URL}/api/navigation/route?startId=1&targetId=3&accessibleOnly=false"
     
     try:
@@ -52,7 +53,7 @@ def test_scheduling_endpoint():
     print("TEST 3: Testing CSP Room Allocation Endpoint (/api/scheduling/allocate)")
     print("==================================================")
     
-    # Request a study pod for 4 people
+    # Request a study pod for four people in a two-hour time window.
     url = f"{BASE_URL}/api/scheduling/allocate?capacity=4&roomType=STUDY_POD&startTime=2026-10-01T10:00:00&endTime=2026-10-01T12:00:00"
     
     try:

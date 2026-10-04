@@ -15,12 +15,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationScreen() {
+    // Keep one API client for the lifetime of this composable.
     val apiService = remember { SmartCampusApiService.create() }
     val coroutineScope = rememberCoroutineScope()
 
     var startId by remember { mutableStateOf("1") }
     var targetId by remember { mutableStateOf("3") }
     var accessibleOnly by remember { mutableStateOf(false) }
+    // Compose state drives the loading indicator, errors, and displayed route.
     var routeNodes by remember { mutableStateOf<List<CampusNode>>(emptyList()) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
@@ -59,6 +61,7 @@ fun NavigationScreen() {
             Button(
                 onClick = {
                     coroutineScope.launch {
+                        // Network work runs asynchronously so the UI remains responsive.
                         isLoading = true
                         errorMessage = null
                         try {
@@ -96,7 +99,7 @@ fun NavigationScreen() {
                 Text(text = it, color = MaterialTheme.colorScheme.error)
             }
 
-            // Display Result List
+            // Each returned graph node is presented as one step of the route.
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(routeNodes) { node ->
                     Card(
