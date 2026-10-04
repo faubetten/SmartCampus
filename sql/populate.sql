@@ -18,13 +18,6 @@ INSERT INTO roles (role_name, description) VALUES
 ('PROFESSOR', 'Faculty member capable of managing courses and priority room bookings'),
 ('STUDENT', 'Enrolled undergraduate/graduate student utilizing campus navigation and study pods');
 
--- Passwords are pre-hashed using BCrypt (e.g., 'SecurePass123!')
-INSERT INTO users (name, email, password_hash, role_id) VALUES
-('Dr. Andreia Artifice', 'andreia.artifice@universidadeeuropeia.pt', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KqK8a6', 2),
-('Prof. Pedro Rosa', 'pedro.rosa@universidadeeuropeia.pt', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KqK8a6', 2),
-('João Silva (Student)', 'joao.silva@student.universidadeeuropeia.pt', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KqK8a6', 3),
-('Beatriz Costa (Student)', 'beatriz.costa@student.universidadeeuropeia.pt', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KqK8a6', 3);
-
 -- -----------------------------------------------------------------------------
 -- 2. BUILDINGS & SPATIAL GRAPH NODES (Discrete Math & A* Pathfinding)
 -- Represents Building B1 (Ground Floor and 1st Floor layout)

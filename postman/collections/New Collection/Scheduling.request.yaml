@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/api/scheduling/allocate?capacity=30&roomType=LAB&startTime=2026-10-05T09:00:00&endTime=2026-10-05T11:00:00
+method: POST
+queryParams:
+  capacity: "30"
+  roomType: LAB
+  startTime: 2026-10-05T09:00:00
+  endTime: 2026-10-05T11:00:00
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LnN0dWRlbnRAc3R1ZGVudC51bml2ZXJzaWRhZGVldXJvcGVpYS5wdCIsImlhdCI6MTc5MTE0OTY2NywiZXhwIjoxNzkxMjM2MDY3fQ.0is-Vqilp7_a1-8nMj2_3kYEHTjktzQc_dhKWHrU3bw
+order: 3964299566859165

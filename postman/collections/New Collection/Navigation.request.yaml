@@ -1,0 +1,13 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/api/navigation/route?startId=1&targetId=5&accessibleOnly=false
+method: GET
+queryParams:
+  startId: "1"
+  targetId: "5"
+  accessibleOnly: "false"
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LnN0dWRlbnRAc3R1ZGVudC51bml2ZXJzaWRhZGVldXJvcGVpYS5wdCIsImlhdCI6MTc5MTE0OTY2NywiZXhwIjoxNzkxMjM2MDY3fQ.0is-Vqilp7_a1-8nMj2_3kYEHTjktzQc_dhKWHrU3bw
+order: 3366260272808181
