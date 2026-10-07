@@ -1,0 +1,21 @@
+$kind: http-request
+url: 'http://localhost:8080/api/rooms'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{Bearer Token}}'
+body:
+  type: json
+  content: |-
+    {
+      "nodeId": 1,
+      "roomNumber": "A101",
+      "capacity": 40,
+      "roomType": "LECTURE_HALL"
+    }
+order: 2000000000000000

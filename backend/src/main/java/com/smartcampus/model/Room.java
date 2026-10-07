@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "rooms")
+// Describes a bookable facility connected to a campus map node.
 public class Room {
 
     @Id
@@ -33,4 +34,10 @@ public class Room {
     public void setCapacity(Integer capacity) { this.capacity = capacity; }
     public String getRoomType() { return roomType; }
     public void setRoomType(String roomType) { this.roomType = roomType; }
+    public Long getNodeId() {
+        return nodeId;
+    }
+    public void setNodeId(Long nodeId) {
+        this.nodeId = nodeId;
+    }
 }

@@ -19,7 +19,7 @@ import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Compose owns the screen content displayed by this activity.
+        // Compose builds the single screen displayed by this activity.
         setContent {
             MaterialTheme {
                 Surface(

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "campus_nodes")
+// Represents a location vertex in the campus navigation graph.
 public class CampusNode {
 
     @Id

@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SmartCampusApiService {
+    // Defines the small REST contract currently used by the mobile client.
     // Retrofit maps this function to the backend's route endpoint.
     @GET("api/navigation/route")
     suspend fun getRoute(

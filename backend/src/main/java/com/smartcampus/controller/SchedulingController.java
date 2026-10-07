@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/scheduling")
+// Converts booking parameters from HTTP requests into scheduling-service calls.
 public class SchedulingController {
 
     private final CSPSchedulingService cspSchedulingService;

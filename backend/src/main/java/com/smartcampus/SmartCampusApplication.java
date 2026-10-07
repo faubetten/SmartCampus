@@ -53,6 +53,7 @@ public class SmartCampusApplication {
             user.setName(name);
             user.setEmail(email);
             // Store only a BCrypt hash; the original password is never persisted.
+            user.setPasswordHash(encoder.encode(rawPass));
             user.setRole(role);
             repo.save(user);
             System.out.println("[INIT] Seeded default user with runtime BCrypt hash: " + email);

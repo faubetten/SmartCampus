@@ -13,6 +13,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
+    // This development secret should be moved to protected configuration in production.
     private final String jwtSecret = "SmartCampusSuperSecretKeyForJWTAuthentication2026SecureKey!";
     // Tokens remain valid for one day after they are issued.
     private final int jwtExpirationMs = 86400000;

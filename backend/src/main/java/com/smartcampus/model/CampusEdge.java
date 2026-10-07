@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "campus_edges")
+// Represents a directed, weighted connection between two map nodes.
 public class CampusEdge {
 
     // Database identifier for this directed connection in the campus graph.

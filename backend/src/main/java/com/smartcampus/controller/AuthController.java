@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+// Handles account creation and login before protected API requests are made.
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -84,7 +85,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-        // Registration is restricted to the default STUDENT role.
+        // Public registration always creates a least-privileged student account.
         if (userRepository.findByEmail(registerRequest.email).isPresent()) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }

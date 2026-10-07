@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+// Selects a room by filtering its domain and checking temporal conflicts.
 public class CSPSchedulingService {
 
     private final RoomRepository roomRepository;
@@ -63,7 +63,6 @@ public class CSPSchedulingService {
             }
 
             // A room cannot be selected when a confirmed or active reservation overlaps.
-            List<org.springframework.data.jpa.repository.query.JpaQueryMethodFactory> conflicts = null; // type safety
             var conflictingBookings = reservationRepository.findConflictingReservations(
                 candidateRoom.getId(), startTime, endTime
             );

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+// Persistent identity used for login and role-based authorization.
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

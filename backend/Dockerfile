@@ -1,3 +1,4 @@
+# Build the application with Maven, then copy only the packaged JAR into a small runtime image.
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .

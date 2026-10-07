@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservations")
+// Stores a user's requested room and the time interval it occupies.
 public class Reservation {
 
     @Id

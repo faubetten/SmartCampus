@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "roles")
+// Defines the application permissions associated with a user.
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

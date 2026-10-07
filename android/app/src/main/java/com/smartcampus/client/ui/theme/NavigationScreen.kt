@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.colorspace.Illuminant.A
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.data.CampusNode
 import com.smartcampus.client.data.SmartCampusApiService
@@ -15,6 +14,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationScreen() {
+    // This screen collects route parameters and renders the backend's path.
     // Keep one API client for the lifetime of this composable.
     val apiService = remember { SmartCampusApiService.create() }
     val coroutineScope = rememberCoroutineScope()
@@ -65,6 +65,7 @@ fun NavigationScreen() {
                         isLoading = true
                         errorMessage = null
                         try {
+                            // Text input is converted only when the user requests a route.
                             val response = apiService.getRoute(
                                 startId.toLong(),
                                 targetId.toLong(),

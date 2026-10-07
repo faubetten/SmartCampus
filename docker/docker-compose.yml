@@ -1,4 +1,5 @@
 services:
+  # The database, API replicas, and proxy share one internal Docker network.
   # PostgreSQL is initialized from the SQL scripts on the first volume creation.
   smartcampus-db:
     image: postgres:16-alpine

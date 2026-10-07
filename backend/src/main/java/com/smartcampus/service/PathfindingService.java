@@ -6,10 +6,10 @@ import com.smartcampus.repository.CampusEdgeRepository;
 import com.smartcampus.repository.CampusNodeRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+// Loads the campus graph and computes routes without exposing persistence details.
 public class PathfindingService {
 
     private final CampusNodeRepository nodeRepository;
