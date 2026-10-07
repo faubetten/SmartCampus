@@ -1,14 +1,12 @@
 $kind: http-request
-url: 'http://localhost:8080/api/rooms'
+url: http://localhost:8080/api/admin/rooms
 method: POST
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 auth:
   type: bearer
   credentials:
-    - key: token
-      value: '{{Bearer Token}}'
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQHN0dWRlbnQudW5pdmVyc2lkYWRlZXVyb3BlaWEucHQiLCJpYXQiOjE3OTE0MDkwNDQsImV4cCI6MTc5MTQ5NTQ0NH0.Dz9zU4sniSE4TlqHjnwvCpumdqdoK_pD2xnlJa56NDs
 body:
   type: json
   content: |-

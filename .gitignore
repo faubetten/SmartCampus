@@ -1,0 +1,19 @@
+# Secret environment files
+.env
+*.env
+.env.*
+!.env.example
+
+# Credentials / keys
+*.pem
+*.key
+*.secret
+
+# Maven build output
+target/
+**/target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/

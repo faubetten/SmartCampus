@@ -6,9 +6,9 @@ services:
     container_name: smartcampus-postgres
     restart: always
     environment:
-      POSTGRES_DB: smartcampus_db
-      POSTGRES_USER: campus_admin
-      POSTGRES_PASSWORD: campus_secure_password_2026
+      POSTGRES_DB: ${DB_NAME:-smartcampus_db}
+      POSTGRES_USER: ${DB_USER:-campus_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -26,9 +26,11 @@ services:
     container_name: smartcampus-api-1
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://smartcampus-db:5432/smartcampus_db
-      SPRING_DATASOURCE_USERNAME: campus_admin
-      SPRING_DATASOURCE_PASSWORD: campus_secure_password_2026
+      SPRING_DATASOURCE_URL: jdbc:postgresql://smartcampus-db:5432/${DB_NAME:-smartcampus_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-campus_admin}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
       INSTANCE_ID: "Node-1 (Primary)"
     depends_on:
       - smartcampus-db
@@ -42,9 +44,11 @@ services:
     container_name: smartcampus-api-2
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://smartcampus-db:5432/smartcampus_db
-      SPRING_DATASOURCE_USERNAME: campus_admin
-      SPRING_DATASOURCE_PASSWORD: campus_secure_password_2026
+      SPRING_DATASOURCE_URL: jdbc:postgresql://smartcampus-db:5432/${DB_NAME:-smartcampus_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-campus_admin}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
       INSTANCE_ID: "Node-2 (Replica)"
     depends_on:
       - smartcampus-db
