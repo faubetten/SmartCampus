@@ -72,6 +72,12 @@ public class AdminRoomController {
                 existingRoom.setNodeId(nodeId);
             }
 
+            if (updatedData.getRoomNumber() != null
+                    && !updatedData.getRoomNumber().equals(existingRoom.getRoomNumber())
+                    && roomRepository.findByRoomNumber(updatedData.getRoomNumber()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("A room with number " + updatedData.getRoomNumber() + " already exists.");
+            }
             if (updatedData.getRoomNumber() != null) {
                 existingRoom.setRoomNumber(updatedData.getRoomNumber());
             }

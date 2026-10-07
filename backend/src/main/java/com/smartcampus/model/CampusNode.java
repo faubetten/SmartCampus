@@ -35,6 +35,8 @@ public class CampusNode {
     // Accessors used when mapping database rows and serializing route results.
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    public Long getBuildingId() { return buildingId; }
+    public void setBuildingId(Long buildingId) { this.buildingId = buildingId; }
     public Integer getFloorNumber() { return floorNumber; }
     public void setFloorNumber(Integer floorNumber) { this.floorNumber = floorNumber; }
     public BigDecimal getCoordX() { return coordX; }
