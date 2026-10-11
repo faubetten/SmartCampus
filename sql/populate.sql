@@ -38,15 +38,16 @@ INSERT INTO campus_nodes (building_id, floor_number, coord_x, coord_y, node_type
 (1, 1, 20.00, 20.00, 'ROOM', TRUE);      -- Node 8: Room B1.10 (Advanced Lab)
 
 -- Weighted Edges representing walkable paths (distances in meters)
+-- Return paths (bidirectional connectivity)
 INSERT INTO campus_edges (source_node_id, target_node_id, weight_distance, requires_stairs) VALUES
-(1, 2, 5.00, FALSE),
-(2, 3, 5.00, FALSE),
-(2, 4, 5.00, TRUE),   -- Uses stairs
-(2, 5, 6.00, FALSE),  -- Uses elevator
-(5, 6, 4.00, FALSE),  -- Vertical transition via elevator
-(4, 6, 4.00, TRUE),   -- Vertical transition via stairs
-(6, 7, 4.00, FALSE),
-(7, 8, 5.00, FALSE);
+(2, 1, 5.00, FALSE),
+(3, 2, 5.00, FALSE),
+(4, 2, 5.00, TRUE),
+(5, 2, 6.00, FALSE),
+(6, 5, 4.00, FALSE),
+(6, 4, 4.00, TRUE),
+(7, 6, 4.00, FALSE),
+(8, 7, 5.00, FALSE);
 
 -- -----------------------------------------------------------------------------
 -- 3. FACILITIES & CSP SCHEDULING RESOURCES

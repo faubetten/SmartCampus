@@ -1,7 +1,7 @@
-package com.smartcampus.client.data
+package com.smartcampus.client.data.model
 
-data class CampusNode(
-    // Mirrors the fields returned by the backend navigation endpoint.
+// Campus Graph Node
+data class CampusNodeDto(
     val id: Long,
     val buildingId: Long,
     val floorNumber: Int,

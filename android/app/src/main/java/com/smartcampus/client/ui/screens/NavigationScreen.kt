@@ -1,29 +1,32 @@
-package com.smartcampus.client.ui
+package com.smartcampus.client.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.smartcampus.client.data.CampusNode
-import com.smartcampus.client.data.SmartCampusApiService
+import com.smartcampus.client.api.NetworkClient
+import com.smartcampus.client.data.model.CampusNodeDto
+import com.smartcampus.client.ui.components.RouteNodesList
 import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationScreen() {
     // This screen collects route parameters and renders the backend's path.
     // Keep one API client for the lifetime of this composable.
-    val apiService = remember { SmartCampusApiService.create() }
+    val context = LocalContext.current
+    val apiService = remember { NetworkClient.createService(context) }
     val coroutineScope = rememberCoroutineScope()
 
     var startId by remember { mutableStateOf("1") }
     var targetId by remember { mutableStateOf("3") }
     var accessibleOnly by remember { mutableStateOf(false) }
     // Compose state drives the loading indicator, errors, and displayed route.
-    var routeNodes by remember { mutableStateOf<List<CampusNode>>(emptyList()) }
+    var routeNodes by remember { mutableStateOf<List<CampusNodeDto>>(emptyList()) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -93,7 +96,7 @@ fun NavigationScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(androidx.compose.ui.Alignment.CenterHorizontally))
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
 
             errorMessage?.let {
@@ -101,22 +104,10 @@ fun NavigationScreen() {
             }
 
             // Each returned graph node is presented as one step of the route.
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(routeNodes) { node ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(12.dp)) {
-                            Text(text = "Node ID: ${node.id} - Type: ${node.nodeType}", style = MaterialTheme.typography.titleMedium)
-                            Text(text = "Floor: ${node.floorNumber} | Coords: (${node.coordX}, ${node.coordY})")
-                            Text(text = "Wheelchair Accessible: ${node.isAccessible}")
-                        }
-                    }
-                }
-            }
+            RouteNodesList(
+                routeNodes = routeNodes,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }

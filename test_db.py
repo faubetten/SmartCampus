@@ -5,7 +5,7 @@ import sys
 DB_CONFIG = {
     "dbname": "smartcampus_db",
     "user": "campus_admin",
-    "password": "campus_secure_password_2026",
+    "password": "SuperSecretDatabasePassword2026!",
     "host": "localhost",
     "port": 5432
 }
