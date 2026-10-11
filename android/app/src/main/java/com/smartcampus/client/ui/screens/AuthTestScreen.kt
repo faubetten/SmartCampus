@@ -21,13 +21,26 @@ fun AuthTestScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val isPreview = LocalInspectionMode.current
-    val apiService = remember(context, isPreview) { if (!isPreview) NetworkClient.createService(context) else null }
     val tokenManager = remember(context, isPreview) { if (!isPreview) TokenManager(context) else null }
 
     var email by remember { mutableStateOf("joao.silva@student.universidadeeuropeia.pt") }
     var password by remember { mutableStateOf("SecurePass123!") }
     var statusText by remember { mutableStateOf("Ready") }
     var hasToken by remember { mutableStateOf(tokenManager?.getToken() != null) }
+
+    val apiService = remember(context, isPreview) {
+        if (!isPreview) {
+            NetworkClient.createService(
+                context = context,
+                onUnauthorized = {
+                    hasToken = false
+                    statusText = "Session expired (401). Redirected to login."
+                }
+            )
+        } else {
+            null
+        }
+    }
 
     Column(
         modifier = Modifier

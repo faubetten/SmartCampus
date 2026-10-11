@@ -39,6 +39,7 @@ INSERT INTO campus_nodes (building_id, floor_number, coord_x, coord_y, node_type
 
 -- Weighted Edges representing walkable paths (distances in meters)
 -- Return paths (bidirectional connectivity)
+-- Bidirectional walkable paths
 INSERT INTO campus_edges (source_node_id, target_node_id, weight_distance, requires_stairs) VALUES
 (2, 1, 5.00, FALSE),
 (3, 2, 5.00, FALSE),

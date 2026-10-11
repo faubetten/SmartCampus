@@ -12,7 +12,10 @@ object NetworkClient {
 
     private const val BASE_URL = "http://10.0.2.2:8080/" // Emulator mapping to host Docker
 
-    fun createService(context: Context): SmartCampusApiService {
+    fun createService(
+        context: Context,
+        onUnauthorized: (() -> Unit)? = null
+    ): SmartCampusApiService {
         val tokenManager = TokenManager(context)
 
         val logging = HttpLoggingInterceptor().apply {
@@ -20,7 +23,7 @@ object NetworkClient {
         }
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenManager))
+            .addInterceptor(AuthInterceptor(tokenManager, onUnauthorized))
             .addInterceptor(logging)
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
