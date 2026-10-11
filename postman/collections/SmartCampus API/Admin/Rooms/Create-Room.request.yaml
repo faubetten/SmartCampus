@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Room
+method: POST
+url: '{{baseUrl}}/api/admin/rooms'
+order: 3000
+description: 'roomType examples: CLASSROOM, LABORATORY, STUDY_POD, LECTURE_HALL'
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "nodeId": 1,
+      "roomNumber": "A101",
+      "capacity": 30,
+      "roomType": "CLASSROOM"
+    }

@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Reservation
+method: DELETE
+url: '{{baseUrl}}/api/admin/reservations/{{reservationId}}'
+order: 5000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

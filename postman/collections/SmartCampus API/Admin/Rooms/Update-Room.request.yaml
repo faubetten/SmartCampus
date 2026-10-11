@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Room
+method: PUT
+url: '{{baseUrl}}/api/admin/rooms/{{roomId}}'
+order: 4000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "capacity": 35,
+      "roomType": "LABORATORY"
+    }

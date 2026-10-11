@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Room
+method: DELETE
+url: '{{baseUrl}}/api/admin/rooms/{{roomId}}'
+order: 5000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

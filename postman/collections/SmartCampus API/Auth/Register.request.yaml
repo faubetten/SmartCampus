@@ -1,0 +1,13 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/api/auth/register'
+order: 2000
+description: 'Register a new student account. Automatically assigns the STUDENT role.'
+body:
+  type: json
+  content: |-
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "password123"
+    }

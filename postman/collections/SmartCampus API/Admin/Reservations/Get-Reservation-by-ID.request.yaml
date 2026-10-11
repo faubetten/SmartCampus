@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get Reservation by ID
+method: GET
+url: '{{baseUrl}}/api/admin/reservations/{{reservationId}}'
+order: 2000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

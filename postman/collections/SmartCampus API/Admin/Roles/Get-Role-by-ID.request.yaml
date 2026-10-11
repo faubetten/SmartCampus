@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get Role by ID
+method: GET
+url: '{{baseUrl}}/api/admin/roles/{{roleId}}'
+order: 2000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

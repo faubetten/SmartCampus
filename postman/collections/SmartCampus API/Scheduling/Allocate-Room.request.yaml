@@ -1,0 +1,27 @@
+$kind: http-request
+name: Allocate Room
+method: POST
+url: "{{baseUrl}}/api/scheduling/allocate?capacity=5&roomType=STUDY_POD&startTime=2025-01-15T09:00:00&endTime=2025-01-15T11:00:00"
+order: 1000
+description: Find the best available room matching the constraints using the CSP solver. Does NOT persist a reservation.
+auth:
+  type: bearer
+  credentials:
+    token: "{{authToken}}"
+queryParams:
+  - key: capacity
+    value: "5"
+    disabled: false
+    description: ""
+  - key: roomType
+    value: STUDY_POD
+    disabled: false
+    description: ""
+  - key: startTime
+    value: 2025-01-15T09:00:00
+    disabled: false
+    description: ""
+  - key: endTime
+    value: 2025-01-15T11:00:00
+    disabled: false
+    description: ""

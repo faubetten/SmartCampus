@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get Room by ID
+method: GET
+url: '{{baseUrl}}/api/admin/rooms/{{roomId}}'
+order: 2000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

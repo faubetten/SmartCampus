@@ -1,0 +1,3 @@
+$kind: collection
+name: Navigation
+description: 'Campus pathfinding using A* algorithm. Requires JWT authentication.'

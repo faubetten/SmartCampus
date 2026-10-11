@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Role
+method: PUT
+url: '{{baseUrl}}/api/admin/roles/{{roleId}}'
+order: 4000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "roleName": "PROFESSOR",
+      "description": "Updated description"
+    }

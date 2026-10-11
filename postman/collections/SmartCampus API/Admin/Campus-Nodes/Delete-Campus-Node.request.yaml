@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Campus Node
+method: DELETE
+url: '{{baseUrl}}/api/admin/campus-nodes/{{nodeId}}'
+order: 5000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

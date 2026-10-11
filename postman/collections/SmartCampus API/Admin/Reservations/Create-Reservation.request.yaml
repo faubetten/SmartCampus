@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create Reservation
+method: POST
+url: '{{baseUrl}}/api/admin/reservations'
+order: 3000
+description: 'status values: CONFIRMED, ACTIVE, CANCELLED'
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "roomId": 1,
+      "startTime": "2025-01-15T09:00:00",
+      "endTime": "2025-01-15T11:00:00",
+      "status": "CONFIRMED"
+    }

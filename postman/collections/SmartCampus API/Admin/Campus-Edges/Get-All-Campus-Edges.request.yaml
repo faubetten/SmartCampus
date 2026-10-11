@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get All Campus Edges
+method: GET
+url: '{{baseUrl}}/api/admin/campus-edges'
+order: 1000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

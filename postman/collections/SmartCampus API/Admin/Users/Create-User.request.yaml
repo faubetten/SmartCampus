@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create User
+method: POST
+url: '{{baseUrl}}/api/admin/users'
+order: 3000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "passwordHash": "hashed_password",
+      "role": { "id": 1 }
+    }

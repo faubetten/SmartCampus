@@ -1,0 +1,22 @@
+$kind: http-request
+name: Create Campus Node
+method: POST
+url: '{{baseUrl}}/api/admin/campus-nodes'
+order: 3000
+description: 'nodeType examples: ROOM, CORRIDOR, STAIRS, ELEVATOR, ENTRANCE'
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "buildingId": 1,
+      "floorNumber": 1,
+      "coordX": 10.50,
+      "coordY": 20.75,
+      "nodeType": "ROOM",
+      "isAccessible": true
+    }

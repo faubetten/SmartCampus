@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Campus Edge
+method: DELETE
+url: '{{baseUrl}}/api/admin/campus-edges/{{edgeId}}'
+order: 5000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

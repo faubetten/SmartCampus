@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Campus Edge
+method: PUT
+url: '{{baseUrl}}/api/admin/campus-edges/{{edgeId}}'
+order: 4000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "weightDistance": 20.00,
+      "requiresStairs": true
+    }

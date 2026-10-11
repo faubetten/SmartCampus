@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create Campus Edge
+method: POST
+url: '{{baseUrl}}/api/admin/campus-edges'
+order: 3000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "sourceNodeId": 1,
+      "targetNodeId": 2,
+      "weightDistance": 15.50,
+      "requiresStairs": false
+    }

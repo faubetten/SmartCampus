@@ -1,0 +1,17 @@
+$kind: http-request
+name: Create Role
+method: POST
+url: '{{baseUrl}}/api/admin/roles'
+order: 3000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "roleName": "PROFESSOR",
+      "description": "Faculty member with room booking privileges"
+    }

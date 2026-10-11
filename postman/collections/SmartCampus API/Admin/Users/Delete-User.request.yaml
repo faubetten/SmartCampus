@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete User
+method: DELETE
+url: '{{baseUrl}}/api/admin/users/{{userId}}'
+order: 5000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

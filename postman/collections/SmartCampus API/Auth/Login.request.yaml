@@ -1,0 +1,12 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/api/auth/login"
+order: 1000
+description: Authenticate with email and password. Returns a Bearer JWT token.
+body:
+  type: json
+  content: |-
+    {
+      "email": "admin@universidadeeuropeia.pt",
+      "password": "SecurePass123!"
+    }

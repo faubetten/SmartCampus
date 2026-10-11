@@ -4,6 +4,8 @@ import com.smartcampus.model.CampusEdge;
 import com.smartcampus.model.CampusNode;
 import com.smartcampus.repository.CampusEdgeRepository;
 import com.smartcampus.repository.CampusNodeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,6 +13,8 @@ import java.util.*;
 @Service
 // Loads the campus graph and computes routes without exposing persistence details.
 public class PathfindingService {
+
+    private static final Logger log = LoggerFactory.getLogger(PathfindingService.class);
 
     private final CampusNodeRepository nodeRepository;
     private final CampusEdgeRepository edgeRepository;
@@ -88,7 +92,8 @@ public class PathfindingService {
                 }
 
                 CampusNode neighbor = nodeRepository.findById(edge.getTargetNodeId()).orElse(null);
-                if (neighbor == null || !neighbor.getIsAccessible() && accessibleOnly) {
+                // Explicit parentheses prevent operator-precedence ambiguity between || and &&.
+                if (neighbor == null || (accessibleOnly && !neighbor.getIsAccessible())) {
                     continue;
                 }
 
@@ -113,6 +118,8 @@ public class PathfindingService {
         }
 
         // An empty result means the destination is unreachable under the selected rules.
+
+        log.warn("No path found from {} to {}", startNode.getId(), targetNode.getId());
         return Collections.emptyList();
     }
 

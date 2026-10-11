@@ -1,0 +1,42 @@
+name: SmartCampus Local
+values:
+  - key: baseUrl
+    value: 'http://localhost:8080'
+    description: 'Base URL for the local Docker stack (Nginx load-balancer on port 8080)'
+    enabled: true
+
+  - key: authToken
+    value: ''
+    description: 'JWT Bearer token — populated automatically by the Login request test script'
+    enabled: true
+    type: secret
+
+  - key: userId
+    value: '1'
+    description: 'Target user ID for Admin/Users requests'
+    enabled: true
+
+  - key: roomId
+    value: '1'
+    description: 'Target room ID for Admin/Rooms and Scheduling requests'
+    enabled: true
+
+  - key: reservationId
+    value: '1'
+    description: 'Target reservation ID for Admin/Reservations requests'
+    enabled: true
+
+  - key: roleId
+    value: '1'
+    description: 'Target role ID for Admin/Roles requests'
+    enabled: true
+
+  - key: nodeId
+    value: '1'
+    description: 'Target campus node ID for Admin/Campus-Nodes and Navigation requests'
+    enabled: true
+
+  - key: edgeId
+    value: '1'
+    description: 'Target campus edge ID for Admin/Campus-Edges requests'
+    enabled: true

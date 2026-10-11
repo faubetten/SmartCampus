@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get Campus Edge by ID
+method: GET
+url: '{{baseUrl}}/api/admin/campus-edges/{{edgeId}}'
+order: 2000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

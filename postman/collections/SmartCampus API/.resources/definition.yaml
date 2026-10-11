@@ -1,0 +1,11 @@
+$kind: collection
+description: REST API for the SmartCampus platform — handles authentication, room scheduling, campus navigation, and admin management.
+variables:
+  baseUrl: http://localhost:8080
+  authToken: ""
+  userId: "1"
+  roomId: "1"
+  reservationId: "1"
+  roleId: "1"
+  nodeId: "1"
+  edgeId: "1"

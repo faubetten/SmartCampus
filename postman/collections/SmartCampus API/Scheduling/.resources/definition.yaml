@@ -1,0 +1,3 @@
+$kind: collection
+name: Scheduling
+description: 'Room allocation and booking via the CSP solver. Requires JWT authentication.'

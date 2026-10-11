@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get All Rooms
+method: GET
+url: '{{baseUrl}}/api/admin/rooms'
+order: 1000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'

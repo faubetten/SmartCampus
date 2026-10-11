@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update User
+method: PUT
+url: '{{baseUrl}}/api/admin/users/{{userId}}'
+order: 4000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+body:
+  type: json
+  content: |-
+    {
+      "name": "Jane Updated",
+      "email": "jane.updated@example.com"
+    }

@@ -1,0 +1,18 @@
+$kind: http-request
+name: Get Route
+method: GET
+url: '{{baseUrl}}/api/navigation/route?startId=1&targetId=3&accessibleOnly=false'
+order: 1000
+description: 'Find the shortest path between two campus nodes using A*. Set accessibleOnly=true to exclude routes requiring stairs.'
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{authToken}}'
+queryParams:
+  - key: startId
+    value: '1'
+  - key: targetId
+    value: '3'
+  - key: accessibleOnly
+    value: 'false'

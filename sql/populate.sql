@@ -34,21 +34,42 @@ INSERT INTO campus_nodes (building_id, floor_number, coord_x, coord_y, node_type
 (1, 0, 15.00, 15.00, 'STAIRS', FALSE),   -- Node 4: Staircase to Floor 1 (Not wheelchair accessible)
 (1, 0, 15.00, 16.00, 'ELEVATOR', TRUE),  -- Node 5: Elevator to Floor 1
 (1, 1, 15.00, 16.00, 'ELEVATOR', TRUE),  -- Node 6: Floor 1 Elevator Exit
-(1, 1, 15.00, 20.00, 'CORRIDOR', TRUE),  -- Node 7: First Floor Hallway B
-(1, 1, 20.00, 20.00, 'ROOM', TRUE);      -- Node 8: Room B1.10 (Advanced Lab)
+(1, 1, 15.00, 15.00, 'STAIRS', FALSE);   -- Node 7: Floor 1 Staircase Landing (Not wheelchair accessible)
+(1, 1, 15.00, 20.00, 'CORRIDOR', TRUE),  -- Node 8: First Floor Hallway B
+(1, 1, 20.00, 20.00, 'ROOM', TRUE);      -- Node 9: Room B1.10 (Advanced Lab)
 
--- Weighted Edges representing walkable paths (distances in meters)
--- Return paths (bidirectional connectivity)
--- Bidirectional walkable paths
+
+-- Weighted Edges representing walkable paths (distances in meters).
+-- Each logical connection is stored as two directed rows (A→B and B→A)
+-- so the A* pathfinder can traverse every corridor in both directions.
 INSERT INTO campus_edges (source_node_id, target_node_id, weight_distance, requires_stairs) VALUES
+-- Ground floor: Entrance ↔ Corridor A
+(1, 2, 5.00, FALSE),
 (2, 1, 5.00, FALSE),
+-- Ground floor: Corridor A ↔ Room B1.01
+(2, 3, 5.00, FALSE),
 (3, 2, 5.00, FALSE),
+-- Ground floor: Corridor A ↔ Staircase (not wheelchair accessible)
+(2, 4, 5.00, TRUE),
 (4, 2, 5.00, TRUE),
+-- Ground floor: Corridor A ↔ Elevator (ground level)
+(2, 5, 6.00, FALSE),
 (5, 2, 6.00, FALSE),
+-- Vertical: Elevator ground ↔ Elevator floor 1
+(5, 6, 4.00, FALSE),
 (6, 5, 4.00, FALSE),
-(6, 4, 4.00, TRUE),
-(7, 6, 4.00, FALSE),
-(8, 7, 5.00, FALSE);
+-- Vertical: Staircase ground ↔ Floor 1 landing (not wheelchair accessible)
+(4, 7, 4.00, TRUE),
+(7, 4, 4.00, TRUE),
+-- Floor 1: Staircase landing ↔ Hallway B (not wheelchair accessible)
+(7, 8, 5.00, TRUE),
+(8, 7, 5.00, TRUE),
+-- Floor 1: Elevator exit ↔ Hallway B
+(6, 8, 4.00, FALSE),
+(8, 6, 4.00, FALSE),
+-- Floor 1: Hallway B ↔ Room B1.10 (Advanced Lab)
+(8, 9, 5.00, FALSE),
+(9, 8, 5.00, FALSE);
 
 -- -----------------------------------------------------------------------------
 -- 3. FACILITIES & CSP SCHEDULING RESOURCES
