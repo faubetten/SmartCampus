@@ -34,7 +34,7 @@ INSERT INTO campus_nodes (building_id, floor_number, coord_x, coord_y, node_type
 (1, 0, 15.00, 15.00, 'STAIRS', FALSE),   -- Node 4: Staircase to Floor 1 (Not wheelchair accessible)
 (1, 0, 15.00, 16.00, 'ELEVATOR', TRUE),  -- Node 5: Elevator to Floor 1
 (1, 1, 15.00, 16.00, 'ELEVATOR', TRUE),  -- Node 6: Floor 1 Elevator Exit
-(1, 1, 15.00, 15.00, 'STAIRS', FALSE);   -- Node 7: Floor 1 Staircase Landing (Not wheelchair accessible)
+(1, 1, 15.00, 15.00, 'STAIRS', FALSE),   -- Node 7: Floor 1 Staircase Landing (Not wheelchair accessible)
 (1, 1, 15.00, 20.00, 'CORRIDOR', TRUE),  -- Node 8: First Floor Hallway B
 (1, 1, 20.00, 20.00, 'ROOM', TRUE);      -- Node 9: Room B1.10 (Advanced Lab)
 
@@ -77,7 +77,7 @@ INSERT INTO campus_edges (source_node_id, target_node_id, weight_distance, requi
 
 INSERT INTO rooms (node_id, room_number, capacity, room_type) VALUES
 (3, 'B1.01', 6, 'STUDY_POD'),
-(8, 'B1.10', 25, 'LABORATORY');
+(9, 'B1.10', 25, 'LABORATORY');
 
 INSERT INTO equipment (equipment_name, description) VALUES
 ('DUAL_MONITOR', 'Workstation equipped with dual 27-inch 4K monitors'),
