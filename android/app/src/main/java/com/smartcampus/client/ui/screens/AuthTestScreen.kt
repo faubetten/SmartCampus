@@ -6,24 +6,28 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
 import com.smartcampus.client.data.model.LoginRequest
 import com.smartcampus.client.security.TokenManager
+import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun AuthTestScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val apiService = remember { NetworkClient.createService(context) }
-    val tokenManager = remember { TokenManager(context) }
+    val isPreview = LocalInspectionMode.current
+    val apiService = remember(context, isPreview) { if (!isPreview) NetworkClient.createService(context) else null }
+    val tokenManager = remember(context, isPreview) { if (!isPreview) TokenManager(context) else null }
 
     var email by remember { mutableStateOf("joao.silva@student.universidadeeuropeia.pt") }
     var password by remember { mutableStateOf("SecurePass123!") }
     var statusText by remember { mutableStateOf("Ready") }
-    var hasToken by remember { mutableStateOf(tokenManager.getToken() != null) }
+    var hasToken by remember { mutableStateOf(tokenManager?.getToken() != null) }
 
     Column(
         modifier = Modifier
@@ -57,14 +61,16 @@ fun AuthTestScreen() {
                 scope.launch {
                     statusText = "Authenticating..."
                     try {
-                        val response = apiService.login(LoginRequest(email.trim(), password))
-                        if (response.isSuccessful && response.body() != null) {
+                        val response = apiService?.login(LoginRequest(email.trim(), password))
+                        if (response != null && response.isSuccessful && response.body() != null) {
                             val token = response.body()!!.accessToken
-                            tokenManager.saveToken(token)
+                            tokenManager?.saveToken(token)
                             hasToken = true
                             statusText = "Authenticated! Token saved."
-                        } else {
+                        } else if (response != null) {
                             statusText = "Login failed: HTTP ${response.code()}"
+                        } else {
+                            statusText = "Preview mode: Authentication unavailable"
                         }
                     } catch (e: Exception) {
                         statusText = "Network Error: ${e.localizedMessage}"
@@ -84,12 +90,14 @@ fun AuthTestScreen() {
                 scope.launch {
                     statusText = "Requesting route..."
                     try {
-                        val response = apiService.getRoute(startId = 1, targetId = 5, accessibleOnly = false)
-                        if (response.isSuccessful) {
+                        val response = apiService?.getRoute(startId = 1, targetId = 5, accessibleOnly = false)
+                        if (response != null && response.isSuccessful) {
                             val nodes = response.body() ?: emptyList()
                             statusText = "Route resolved! Nodes traversed: ${nodes.size}"
-                        } else {
+                        } else if (response != null) {
                             statusText = "Route error: HTTP ${response.code()}"
+                        } else {
+                            statusText = "Preview mode: Route endpoint unavailable"
                         }
                     } catch (e: Exception) {
                         statusText = "Route request failed: ${e.localizedMessage}"
@@ -104,5 +112,13 @@ fun AuthTestScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
         Text(text = statusText, style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AuthTestScreenPreview() {
+    SmartCampusClientTheme {
+        AuthTestScreen()
     }
 }

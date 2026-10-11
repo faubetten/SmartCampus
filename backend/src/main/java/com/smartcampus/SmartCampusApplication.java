@@ -36,6 +36,7 @@ public class SmartCampusApplication {
         return args -> {
             Role studentRole = roleRepository.findByRoleName("STUDENT").orElse(null);
             Role professorRole = roleRepository.findByRoleName("PROFESSOR").orElse(null);
+            Role adminRole = roleRepository.findByRoleName("ADMIN").orElse(null);
 
             String defaultPassword = "SecurePass123!";
 
@@ -44,6 +45,7 @@ public class SmartCampusApplication {
             createIfNotExists(userRepository, passwordEncoder, "Beatriz Costa", "beatriz.costa@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Dr. Andreia Artifice", "andreia.artifice@universidadeeuropeia.pt", defaultPassword, professorRole);
             createIfNotExists(userRepository, passwordEncoder, "Prof. Pedro Rosa", "pedro.rosa@universidadeeuropeia.pt", defaultPassword, professorRole);
+            createIfNotExists(userRepository, passwordEncoder, "Admin User", "admin@universidadeeuropeia.pt", defaultPassword, adminRole);
         };
     }
 
