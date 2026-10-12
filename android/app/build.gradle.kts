@@ -67,4 +67,12 @@ dependencies {
     // Coroutines & Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
+
+    // Navigation for Jetpack Compose
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
+    // Compose Material Icons
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
+
 }
