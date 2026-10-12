@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.smartcampus.client.security.TokenManager
 import com.smartcampus.client.ui.screens.LoginScreen
-import com.smartcampus.client.ui.screens.NavigationScreen
+import com.smartcampus.client.ui.screens.MainDashboardScreen
 
 @Composable
 fun AppNavGraph(
@@ -19,7 +19,7 @@ fun AppNavGraph(
 
     // Automatically navigate into the app if a token is already present
     val startDestination = if (tokenManager.getToken() != null) {
-        Screen.Navigation.route
+        Screen.MainDashboard.route
     } else {
         Screen.Login.route
     }
@@ -31,18 +31,19 @@ fun AppNavGraph(
         composable(Screen.Login.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    navController.navigate(Screen.Navigation.route) {
+                    navController.navigate(Screen.MainDashboard.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Screen.Navigation.route) {
-            NavigationScreen(
+        composable(Screen.MainDashboard.route) {
+            MainDashboardScreen(
                 onLogout = {
+                    tokenManager.clearToken()
                     navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Navigation.route) { inclusive = true }
+                        popUpTo(Screen.MainDashboard.route) { inclusive = true }
                     }
                 }
             )

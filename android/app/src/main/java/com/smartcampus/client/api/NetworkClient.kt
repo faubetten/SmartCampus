@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 object NetworkClient {
 
     private const val BASE_URL = "http://127.0.0.1:8080/"
-
     fun createService(
         context: Context,
         onUnauthorized: (() -> Unit)? = null
