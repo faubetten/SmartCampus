@@ -9,6 +9,8 @@ sealed class Screen(val route: String) {
     data object Login : Screen("login")
     data object Register : Screen("register")
     data object MainDashboard : Screen("dashboard")
+    data object ForgotPassword : Screen("forgot_password")
+    data object ResetPassword : Screen("reset_password")
 }
 
 sealed class BottomNavItem(val route: String, val label: String, val icon: ImageVector) {

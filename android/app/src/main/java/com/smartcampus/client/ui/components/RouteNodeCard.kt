@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smartcampus.client.data.model.CampusNodeDto
+import com.smartcampus.client.data.model.CampusNode
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 
 @Composable
 fun RouteNodeCard(
-    node: CampusNodeDto,
+    node: CampusNode,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -51,7 +51,7 @@ fun RouteNodeCard(
 fun RouteNodeCardPreview() {
     SmartCampusClientTheme {
         RouteNodeCard(
-            node = CampusNodeDto(
+            node = CampusNode(
                 id = 101L,
                 buildingId = 1L,
                 floorNumber = 2,

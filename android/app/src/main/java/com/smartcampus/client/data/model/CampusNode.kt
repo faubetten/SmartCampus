@@ -1,7 +1,7 @@
 package com.smartcampus.client.data.model
 
 // Campus Graph Node
-data class CampusNodeDto(
+data class CampusNode(
     val id: Long,
     val buildingId: Long,
     val floorNumber: Int,

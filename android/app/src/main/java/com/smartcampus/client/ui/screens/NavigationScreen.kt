@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
-import com.smartcampus.client.data.model.CampusNodeDto
+import com.smartcampus.client.data.model.CampusNode
 import com.smartcampus.client.security.TokenManager
 import com.smartcampus.client.ui.components.RouteNodesList
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
@@ -41,7 +41,7 @@ fun NavigationScreen(
     var targetId by remember { mutableStateOf("3") }
     var accessibleOnly by remember { mutableStateOf(false) }
     // Compose state drives the loading indicator, errors, and displayed route.
-    var routeNodes by remember { mutableStateOf<List<CampusNodeDto>>(emptyList()) }
+    var routeNodes by remember { mutableStateOf<List<CampusNode>>(emptyList()) }
     var statusMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
-import com.smartcampus.client.data.model.CSPResultDto
+import com.smartcampus.client.data.model.CSPResult
 import com.smartcampus.client.security.TokenManager
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ fun SchedulingScreen(
     var endTimeIso by remember { mutableStateOf(now.plusHours(2).format(isoFormatter)) }
 
     var isLoading by remember { mutableStateOf(false) }
-    var allocationResult by remember { mutableStateOf<CSPResultDto?>(null) }
+    var allocationResult by remember { mutableStateOf<CSPResult?>(null) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Scaffold(

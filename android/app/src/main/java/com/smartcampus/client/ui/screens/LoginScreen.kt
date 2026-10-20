@@ -19,7 +19,9 @@ import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit = {}) {
+fun LoginScreen(onLoginSuccess: () -> Unit = {},
+                onNavigateToRegister: () -> Unit = {},
+                onNavigateToForgotPassword: () -> Unit = {}) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val isPreview = LocalInspectionMode.current
@@ -143,6 +145,27 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {}) {
                 Text("Log In")
             }
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(onClick = onNavigateToForgotPassword) {
+                Text("Forgot Password?", style = MaterialTheme.typography.bodySmall)
+            }
+
+            TextButton(onClick = onNavigateToRegister) {
+                Text("Register Account", style = MaterialTheme.typography.bodySmall)
+            }
+        }
+
+
+
+
+
     }
 }
 
@@ -150,6 +173,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {}) {
 @Composable
 fun LoginScreenPreview() {
     SmartCampusClientTheme {
-        LoginScreen()
+        LoginScreen( )
     }
 }

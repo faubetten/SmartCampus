@@ -7,8 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.smartcampus.client.security.TokenManager
+import com.smartcampus.client.ui.screens.ForgotPasswordScreen
 import com.smartcampus.client.ui.screens.LoginScreen
 import com.smartcampus.client.ui.screens.MainDashboardScreen
+import com.smartcampus.client.ui.screens.RegisterScreen
 
 @Composable
 fun AppNavGraph(
@@ -34,6 +36,14 @@ fun AppNavGraph(
                     navController.navigate(Screen.MainDashboard.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route){
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToForgotPassword = {
+                    navController.navigate(Screen.ForgotPassword.route)
                 }
             )
         }
@@ -44,6 +54,35 @@ fun AppNavGraph(
                     tokenManager.clearToken()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.MainDashboard.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Register.route) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Register.route) { inclusive = true }
+                    }
+                }
+            )
+
+        }
+
+        composable(Screen.ForgotPassword.route) {  
+            ForgotPasswordScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onResetComplete = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.ForgotPassword.route) { inclusive = true }
                     }
                 }
             )

@@ -1,6 +1,6 @@
 package com.smartcampus.client.data.model
 
-data class RoomDto(
+data class Room(
     val id: Long,
     val nodeId: Long,
     val roomNumber: String,
@@ -8,8 +8,8 @@ data class RoomDto(
     val roomType: String
 )
 
-data class CSPResultDto(
+data class CSPResult(
     val success: Boolean,
-    val assignedRoom: RoomDto?,
+    val assignedRoom: Room?,
     val message: String
 )
