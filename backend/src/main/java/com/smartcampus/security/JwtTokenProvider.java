@@ -12,6 +12,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
+// Creates and validates signed JWTs used by stateless API authentication.
 public class JwtTokenProvider {
 
     private final String jwtSecret;

@@ -30,7 +30,7 @@ public class NavigationController {
             List<CampusNode> route = pathfindingService.findShortestPath(startId, targetId, accessibleOnly);
 
             if (route.isEmpty()) {
-                // A path exists in the DB but is unreachable under the chosen constraints.
+                // No route satisfies the graph and accessibility constraints.
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(route);

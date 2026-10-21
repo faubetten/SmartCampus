@@ -14,6 +14,7 @@ import retrofit2.http.*
 
 interface SmartCampusApiService {
 
+    // Retrofit maps these suspend functions to the backend's REST endpoints.
     @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<JwtResponse>
 

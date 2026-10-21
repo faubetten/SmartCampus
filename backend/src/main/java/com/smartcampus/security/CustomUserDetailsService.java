@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+// Adapts the application's User entity to Spring Security's user model.
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;

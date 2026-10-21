@@ -42,6 +42,7 @@ class AdminCrudControllerTest {
 
     @BeforeEach
     void setUp() {
+        // Standalone MockMvc tests the controllers without starting a web server.
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new AdminRoomController(roomRepository, campusNodeRepository),
@@ -171,6 +172,7 @@ class AdminCrudControllerTest {
     }
 
     private void assertCrud(String basePath, Object entity) throws Exception {
+        // Every admin resource must support the same five CRUD operations.
         mockMvc.perform(get(basePath)).andExpect(status().isOk());
         mockMvc.perform(get(basePath + "/1")).andExpect(status().isOk());
         mockMvc.perform(post(basePath)

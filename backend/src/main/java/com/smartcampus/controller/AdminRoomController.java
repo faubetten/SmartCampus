@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/rooms")
+// Provides administrative CRUD operations for bookable rooms.
 public class AdminRoomController {
 
     private final RoomRepository roomRepository;

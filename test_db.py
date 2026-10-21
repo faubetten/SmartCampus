@@ -22,7 +22,7 @@ def test_database_connection():
         sys.exit(1)
 
 def test_table_integrity(conn):
-    # Minimum counts confirm that the sample dataset was loaded completely.
+    # Minimum counts provide a quick check that the sample dataset was loaded.
     print("\n[-] Verifying Table Row Counts (Data Integrity)...")
     expected_counts = {
         "roles": 3,

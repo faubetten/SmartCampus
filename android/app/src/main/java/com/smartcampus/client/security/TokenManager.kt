@@ -7,6 +7,7 @@ import androidx.core.content.edit
 
 class TokenManager(context: Context) {
 
+    // The master key protects the preferences that contain the access token.
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
@@ -19,14 +20,17 @@ class TokenManager(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    /** Stores the JWT locally so it can be reused between app launches. */
     fun saveToken(token: String) {
         sharedPreferences.edit { putString(KEY_ACCESS_TOKEN, token)}
     }
 
+    /** Returns the current JWT, or null when the user is not signed in. */
     fun getToken(): String? {
         return sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
     }
 
+    /** Removes the JWT during logout or after a rejected request. */
     fun clearToken() {
         sharedPreferences.edit { remove(KEY_ACCESS_TOKEN) }
     }

@@ -8,7 +8,7 @@ def test_load_balancer_health():
     print("TEST 1: Testing Nginx Load Balancer & Node Redundancy")
     print("==================================================")
     
-    # Different instance identifiers prove that Nginx forwards requests to both nodes.
+    # Different response identifiers show whether Nginx reached more than one node.
     nodes_hit = set()
     for i in range(6):
         try:

@@ -33,7 +33,7 @@ public class AuthController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // In-memory token store: Email -> ResetTokenDetails
+    // Temporary reset codes are kept in memory and expire after a short period.
     private final Map<String, PasswordResetToken> resetTokenStore = new ConcurrentHashMap<>();
 
     public AuthController(AuthenticationManager authenticationManager,
@@ -98,7 +98,6 @@ public class AuthController {
         }
     }
 
-    // Inside AuthController.java DTO section:
     public static class ForgotPasswordResponse {
         public String message;
         public String debugOtp;

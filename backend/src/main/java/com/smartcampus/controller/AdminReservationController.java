@@ -13,6 +13,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/reservations")
+// Provides administrative CRUD operations for room reservations.
 public class AdminReservationController {
 
     private final ReservationRepository reservationRepository;

@@ -48,6 +48,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {},
         }
     }
 
+    // Compose state controls validation messages, progress feedback, and navigation
+    // after the asynchronous login request completes.
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,6 +106,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {},
         Button(
             onClick = {
 
+                // Reject incomplete input before starting a network request.
                 if (email.isBlank() || password.isBlank()) {
                     errorMessage = "Email and password cannot be empty."
                     return@Button
@@ -113,6 +116,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {},
                     errorMessage = null
                     isLoading = true
                     try {
+                        // The token is saved only after the server confirms the credentials.
                         val response = apiService?.login(LoginRequest(email.trim(), password))
                         if (response != null && response.isSuccessful && response.body() != null) {
                             val token = response.body()!!.accessToken

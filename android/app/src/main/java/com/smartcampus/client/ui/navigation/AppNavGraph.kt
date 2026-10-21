@@ -19,7 +19,7 @@ fun AppNavGraph(
     val context = LocalContext.current
     val tokenManager = TokenManager(context)
 
-    // Automatically navigate into the app if a token is already present
+    // A saved token lets the user skip login; otherwise the login screen is shown.
     val startDestination = if (tokenManager.getToken() != null) {
         Screen.MainDashboard.route
     } else {

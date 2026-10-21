@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/campus-edges")
+// Provides authenticated administrators with CRUD access to graph connections.
 public class AdminCampusEdgeController {
 
     private final CampusEdgeRepository campusEdgeRepository;

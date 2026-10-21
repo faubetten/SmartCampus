@@ -17,6 +17,7 @@ fun MainDashboardScreen(
     onLogout: () -> Unit,
     innerNavController: NavHostController = rememberNavController()
 ) {
+    // The dashboard keeps navigation and scheduling in one authenticated area.
     val items = listOf(BottomNavItem.Navigation, BottomNavItem.Scheduling)
     val navBackStackEntry by innerNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -31,6 +32,7 @@ fun MainDashboardScreen(
                         selected = currentRoute == item.route,
                         onClick = {
                             if (currentRoute != item.route) {
+                                // Preserve each tab's state while avoiding duplicate destinations.
                                 innerNavController.navigate(item.route) {
                                     popUpTo(innerNavController.graph.findStartDestination().id) {
                                         saveState = true

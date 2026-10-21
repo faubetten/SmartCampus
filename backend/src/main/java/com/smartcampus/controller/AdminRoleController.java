@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/roles")
+// Manages the roles used by the backend's role-based access control.
 public class AdminRoleController {
 
     private final RoleRepository roleRepository;

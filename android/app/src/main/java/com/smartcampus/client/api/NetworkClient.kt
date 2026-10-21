@@ -10,7 +10,15 @@ import java.util.concurrent.TimeUnit
 
 object NetworkClient {
 
+    // Retrofit requires the base URL to end with a slash when relative API paths are used.
     private const val BASE_URL = "http://127.0.0.1:8080/"
+
+    /**
+     * Builds the shared HTTP client used by the app's API screens.
+     *
+     * The interceptor adds authentication and handles expired sessions, while
+     * Retrofit converts JSON responses into Kotlin data classes.
+     */
     fun createService(
         context: Context,
         onUnauthorized: (() -> Unit)? = null

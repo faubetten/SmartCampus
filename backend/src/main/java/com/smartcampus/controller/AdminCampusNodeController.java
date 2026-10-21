@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/campus-nodes")
+// Provides authenticated administrators with CRUD access to graph locations.
 public class AdminCampusNodeController {
 
     private final CampusNodeRepository campusNodeRepository;

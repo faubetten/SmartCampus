@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/users")
+// Provides administrative CRUD operations for application users.
 public class AdminUserController {
 
     private final UserRepository userRepository;
