@@ -7,11 +7,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.smartcampus.client.BuildConfig
 
 object NetworkClient {
 
-    // Retrofit requires the base URL to end with a slash when relative API paths are used.
-    private const val BASE_URL = "http://127.0.0.1:8080/"
+    // Uses ADB reverse port forwarding (adb reverse tcp:8080 tcp:8080) to connect directly to host localhost.
+    private val BASE_URL = BuildConfig.BASE_URL
 
     /**
      * Builds the shared HTTP client used by the app's API screens.

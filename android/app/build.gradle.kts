@@ -17,13 +17,25 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Default URL for development.
+        buildConfigField("String", "BASE_URL", "\"http://127.0.0.1:8080/\"")
     }
 
     buildTypes {
+
+        debug {
+            // Uses defaultConfig values.
+        }
         release {
             optimization {
                 enable = false
             }
+            // Overrides defaultConfig values.
+            buildConfigField("String", "BASE_URL", "\"http://127.0.0.1:8080/\"")
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
         }
     }
     compileOptions {
@@ -33,6 +45,7 @@ android {
     buildFeatures {
         // Enables Jetpack Compose support in the Android module.
         compose = true
+        buildConfig = true // Enables BuildConfig generation
     }
 }
 

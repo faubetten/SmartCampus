@@ -44,6 +44,7 @@ fun NavigationScreen(
     var routeNodes by remember { mutableStateOf<List<CampusNode>>(emptyList()) }
     var statusMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
+    var success by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -123,6 +124,7 @@ fun NavigationScreen(
                             if (response?.body() != null && response.isSuccessful) {
                                 routeNodes = response.body()!!
                                 statusMessage = "Route calculated successfully!"
+                                success = true
                             } else if (response != null) {
                                 statusMessage = "Error: ${response.code()} (Route not found)"
                                 routeNodes = emptyList()
@@ -159,7 +161,7 @@ fun NavigationScreen(
             }
 
             statusMessage?.let {
-                Text(text = it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                Text(text = it, color = if(!success) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

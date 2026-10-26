@@ -1,0 +1,59 @@
+Perguntas a fazer:
+validar material de estudo -> Exame software e Moveis
+mostrar backend e android app
+Sistemas Distribuidos -> Como replicar base de dados com tolerancia a faltas
+Perguntar sobre cloud
+Perguntar se AI pode ser java ou tem de ser Python
+Perguntar sobre implementacao de UCs
+
+Planos de projeto/TODOs:
+
+Flow:
+Login/Register (--)-> Room allocate -> Agendar reserva -> (--)Visualizar sala -> Navegar para sala estilo google maps usando localizaçao-> Completa nevagação ao cancelar ou distancia proxima da sala/local -> Validação de reserva codigo QR -> Completa o tempo de reserva
+
+
+Android:
+Adicionar comentarios proprios para o final
+melohrar UI
+splash screen
+mapeamento de salas-
+enriquecer conceit de pathing usando visualizacao campus e localização--
+Criar screen de sala onde se pode reservar e visualizar---
+visualizar os 2 andares-
+visualizar pathing por linha-
+Salas interativas para ver info e fazer reservas
+visualizar reservas feitas por user
+Update gradle api URL once app is deployed and running on cloud
+
+Backend:
+
+Aprofundar algoritmos de Navegação e agendamento:--
+Tirar tempo para comentar e entender os algoritmos
+Otimizar algoritmos	
+Ai em Python--
+Aprofundar Equipamentos e roles beacons e access logs-
+ALTERAR SEED DATA PARA SUPORTAR CAMPUS IADE: SALAS, NODES, NAVEGACAO, BUILDINGS  
+Fazer com que scheduling de todas as salas validas e de a cada uma opcao de fazer reserva---
+Mudar navegação usar localização de utilizador e de salas/locais em vez de nodes
+Eventual 2FA?
+
+
+melhorar error handling e logging nos endpoints (Logger Factory)---
+dar erro especifico para conta nao admin para endpoints protegidos--
+Cloud uploading-
+features IOT -> Codigo QR para validar reserva--
+User settings-
+Admin features: add remove, equipment, buildings-
+update postman + documentation
+update readme
+update gitignore
+replica synced DB-
+
+
+
+
+Asegurar implementacao destas UCs:-
+Seguranca
+Engenharia de software -> revisao rapida e geral de conteudo
+Matematica discreta---
+

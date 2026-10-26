@@ -1,0 +1,171 @@
+Docker:
+
+!!! docker init -> FAZ TUDO
+
+GUI para executar imagens 
+Docker usa layered caching 
+
+Código:
+DockerFile -> ficheiro principal
+.dockeringore -> ignorar files como node_modules
+
+Tudo comeca com FROM -> seleciona imagem a usar 
+ex: FROM node:22 -> imagem node versao 22
+
+fazer download de dependencias primeiro
+
+WORKKDIR /app -> define onde o docker comeca
+
+COPY package*.json ./ -> copia package files
+
+RUN npm install -> instala dependencias
+
+COPY .. -> copia tudo
+
+ENV PORT=9000 -> variavel ambiente
+
+EXPOSE 9000 -> caso variavel seja port para docker usar
+
+CMD ["npm", "start"] -> Correr app 
+
+Terminal:
+
+docker build -t *nome* . -> criar imagem com tag nome e path
+
+docker run -p 9000:9000 *nome* -> correr container com port forwarding caso necessario
+
+GUI:
+
+docker scout -> analisa packages por falhas de seguranca
+
+Docker Compose -> para multicontainers
+
+compose.yaml: -> file para criar multicontainers
+
+services:
+	backend:
+		build: . -> usa DockerFile criado
+		ports: -> port forwarding necessario
+			- '9000:9000'
+	db:
+		image: postgres:latest -> usa imagem base de postgres
+		environment: -> variaveis necessarias
+			POSTGRES_USER: user
+			POSTGRES_PASSWORD: pass
+			POSTGRES_DB: mydb
+		volumes: -> volume onde data vai parar caso container seja apagado
+			-postgres_data:/var/lib/postgressql/data
+volumes: -> cria ficheiro de volumes
+	postgres_data:
+
+Terminal:
+
+docker compose up -d-> encontra e corre compose atualizado
+docker compose down  -v-> para containers
+docker compose build --no-cache -> full wipe
+docker stop -> para container
+docker rm -> apaga container
+docker ps -> containers view
+docker compose -f logs -f api-node-1 -> logs do container
+
+
+
+
+
+
+PgAdmin:
+Server com password correta e base de dados a correr
+Query Tool para dados SQL
+F5 para executar
+Schemas para tables e views
+
+
+
+
+
+Android Studio:
+
+open /android
+androidmanifest -> Permitir Internet
+build.gradle.kts module -> dependencias -> Sync now
+
+localhost:
+http://10.0.2.2:8080/ -> emulator
+computer Wifi -> physical 
+adb reverse tcp:8080 tcp:8080 -> route requests to local host
+adb -s emulator-5554 reverse tcp:8080 tcp:8080 -> same but for the emulator
+
+data -> retrofit
+ui -> jetpack compose
+
+
+Notas Android:
+
+Funções -> minusculas a comecar
+Classes e objetos -> maiuscula a comecar
+
+MainActivity.kt:
+set Content -> Apontar para Navegador
+
+AppNavGraph.kt:
+navController como argumento
+NavHost -> composables com os screens na navegação
+
+composable(*Screen route*){
+	Screen(
+		*Função como loginSucess() ={
+			navController.navigate(*route destino*) {
+                        popUpTo(*origem route*) { inclusive = true }
+                    }
+	)
+}
+
+Screen.kt:
+sealed classes e data objects de screens e Navigation bars com routes
+		
+
+
+Previews:
+@Preview(showBackground = true) -> acima de composabe para fazer preview
+Suportar token manager e api service para ter conteto null em previews
+
+
+Screens:
+fun Screen(onLoginSucess() -> Unit = {}) -> funcao ira tirar do screen
+
+MainDashboardScreen.kt:
+Tem o seu proprio innerNavController
+
+TokenManager.kt:
+funcoes de manutencao de token
+
+AuthInterceptor.kt:
+adiciona authenticação a requests
+
+ApiService.kt:
+Endpoints da api
+
+NetworkClient.kt:
+cria client e service api com itercepoters de auth e logging
+
+
+
+
+
+
+
+
+
+
+
+Backend: 
+pom.xml -> dependencias
+
+
+
+
+
+AI:
+
+
+

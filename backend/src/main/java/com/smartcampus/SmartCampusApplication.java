@@ -44,7 +44,6 @@ public class SmartCampusApplication {
             createIfNotExists(userRepository, passwordEncoder, "João Silva", "joao.silva@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Beatriz Costa", "beatriz.costa@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Dr. Andreia Artifice", "andreia.artifice@universidadeeuropeia.pt", defaultPassword, professorRole);
-            createIfNotExists(userRepository, passwordEncoder, "Prof. Pedro Rosa", "pedro.rosa@universidadeeuropeia.pt", defaultPassword, professorRole);
             createIfNotExists(userRepository, passwordEncoder, "Admin User", "admin@universidadeeuropeia.pt", defaultPassword, adminRole);
         };
     }
