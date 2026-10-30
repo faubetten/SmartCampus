@@ -7,9 +7,3 @@ data class Room(
     val capacity: Int,
     val roomType: String
 )
-
-data class CSPResult(
-    val success: Boolean,
-    val assignedRoom: Room?,
-    val message: String
-)

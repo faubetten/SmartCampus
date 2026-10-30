@@ -14,6 +14,7 @@ public class Role {
     @Column(name = "role_name", nullable = false, unique = true)
     private String roleName;
 
+    @Column(name = "description")
     private String description;
 
     // Accessors used by JPA and user authentication.

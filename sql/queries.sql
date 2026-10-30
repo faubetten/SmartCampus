@@ -12,7 +12,6 @@
 -- -----------------------------------------------------------------------------
 
 SELECT 
-    b.code AS building_code,
     b.name AS building_name,
     r.room_number,
     r.room_type,
@@ -23,8 +22,8 @@ JOIN campus_nodes cn ON b.building_id = cn.building_id
 JOIN rooms r ON cn.node_id = r.node_id
 LEFT JOIN room_equipment re ON r.room_id = re.room_id
 LEFT JOIN equipment e ON re.equipment_id = e.equipment_id
-GROUP BY b.code, b.name, r.room_number, r.room_type, r.capacity
-ORDER BY b.code, r.room_number;
+GROUP BY b.name, r.room_number, r.room_type, r.capacity
+ORDER BY b.name, r.room_number;
 
 
 -- -----------------------------------------------------------------------------
@@ -55,7 +54,7 @@ ORDER BY utilization_rank;
 
 SELECT 
     e.edge_id,
-    b.code AS building_code,
+    b.name AS building_name,
     src.floor_number AS source_floor,
     src.node_type AS source_type,
     tgt.floor_number AS target_floor,

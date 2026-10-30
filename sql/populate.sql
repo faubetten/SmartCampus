@@ -23,8 +23,8 @@ INSERT INTO roles (role_name, description) VALUES
 -- Represents Building B1 (Ground Floor and 1st Floor layout)
 -- -----------------------------------------------------------------------------
 
-INSERT INTO buildings (code, name) VALUES
-('B1', 'Faculdade de Design, Tecnologia e Comunicação - Edifício Principal');
+INSERT INTO buildings (name) VALUES
+('Faculdade de Design, Tecnologia e Comunicação - Edifício Principal');
 
 -- Nodes for Floor 0 (Ground) and Floor 1
 INSERT INTO campus_nodes (building_id, floor_number, coord_x, coord_y, node_type, is_accessible) VALUES
@@ -76,7 +76,7 @@ INSERT INTO campus_edges (source_node_id, target_node_id, weight_distance, requi
 -- -----------------------------------------------------------------------------
 
 INSERT INTO rooms (node_id, room_number, capacity, room_type) VALUES
-(3, 'B1.01', 6, 'STUDY_POD'),
+(3, 'B1.01', 6, 'STUDY_POD'), -- Room type in upper case
 (9, 'B1.10', 25, 'LABORATORY');
 
 INSERT INTO equipment (equipment_name, description) VALUES

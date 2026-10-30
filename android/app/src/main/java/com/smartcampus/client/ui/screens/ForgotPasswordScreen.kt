@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
-import com.smartcampus.client.data.model.ForgotPasswordRequest
-import com.smartcampus.client.data.model.ResetPasswordRequest
+import com.smartcampus.client.data.requestDto.ForgotPasswordRequestDto
+import com.smartcampus.client.data.requestDto.ResetPasswordRequestDto
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
 
@@ -106,7 +106,7 @@ fun ForgotPasswordScreen(
                             isLoading = true
                             errorMessage = null
                             try {
-                                val response = apiService?.forgotPassword(ForgotPasswordRequest(email.trim()))
+                                val response = apiService?.forgotPassword(ForgotPasswordRequestDto(email.trim()))
                                 if (response != null && response.isSuccessful && response.body() != null) {
                                     val body = response.body()!!
                                     receivedOtp = body.debugOtp
@@ -227,7 +227,7 @@ fun ForgotPasswordScreen(
                             errorMessage = null
                             try {
                                 val response = apiService?.resetPassword(
-                                    ResetPasswordRequest(
+                                    ResetPasswordRequestDto(
                                         email = email.trim(),
                                         otp = otp.trim(),
                                         newPassword = newPassword

@@ -1,82 +1,67 @@
 package com.smartcampus.controller;
-
-import com.smartcampus.model.User;
-import com.smartcampus.repository.UserRepository;
 import com.smartcampus.service.CSPSchedulingService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
+import java.util.List;
+import com.smartcampus.dto.RoomDetailsDto;
+import com.smartcampus.dto.BookingResponseDto;
 
 @RestController
 @RequestMapping("/api/scheduling")
-// Converts booking parameters from HTTP requests into scheduling-service calls.
 public class SchedulingController {
 
     private final CSPSchedulingService cspSchedulingService;
-    private final UserRepository userRepository;
+    private static final Logger log = LoggerFactory.getLogger(SchedulingController.class);
 
-    public SchedulingController(CSPSchedulingService cspSchedulingService,
-                                UserRepository userRepository) {
+    public SchedulingController(CSPSchedulingService cspSchedulingService) {
         this.cspSchedulingService = cspSchedulingService;
-        this.userRepository = userRepository;
     }
 
-    @PostMapping("/allocate")
-    public ResponseEntity<CSPSchedulingService.CSPResult> allocateRoom(
-            @RequestParam int capacity,
-            @RequestParam String roomType,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
-
-        // The service applies capacity, type, and time-overlap constraints.
-        CSPSchedulingService.CSPResult result = cspSchedulingService.solveRoomAllocationCSP(
-                capacity, roomType, startTime, endTime
-        );
-
-        if (!result.success) {
-            return ResponseEntity.badRequest().body(result);
-        }
-        return ResponseEntity.ok(result);
-    }
 
     /**
-     * Allocates the best available room via the CSP solver and immediately
-     * persists a CONFIRMED Reservation record for the authenticated user.
-     *
-     * <p>Requires a valid JWT — the authenticated user's ID is resolved from
-     * the security context so it cannot be spoofed via a request parameter.</p>
-     *
-     * @param capacity  Minimum number of seats required
-     * @param roomType  Facility category (e.g. 'STUDY_POD', 'LABORATORY')
-     * @param startTime ISO-8601 start of the desired booking window
-     * @param endTime   ISO-8601 end of the desired booking window
-     * @return 201 Created with the saved Reservation, or 400 on failure
-     */
-    @PostMapping("/book")
-    public ResponseEntity<CSPSchedulingService.BookingResult> bookRoom(
-            @AuthenticationPrincipal UserDetails userDetails,
+     * Returns all candidate rooms that satisfy the user's preferences and time slot.
+    */
+    @GetMapping("/available")
+    public ResponseEntity<List<RoomDetailsDto>> findAvailableRooms(
             @RequestParam int capacity,
-            @RequestParam String roomType,
+            @RequestParam(defaultValue = "ANY") String roomType,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
 
-        // Resolve the database user ID from the authenticated principal's email.
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElse(null);
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        CSPSchedulingService.BookingResult result =
-                cspSchedulingService.bookRoom(user.getId(), capacity, roomType, startTime, endTime);
-
-        if (!result.success) {
-            return ResponseEntity.badRequest().body(result);
-        }
-        return ResponseEntity.status(201).body(result);
+        log.info("Finding available rooms with capacity >= {}, type = {}, time window [{}, {}).", capacity, roomType, startTime, endTime);
+        List<RoomDetailsDto> rooms = cspSchedulingService.findAvailableRooms(
+                capacity, roomType, startTime, endTime
+        );
+        log.info("Found {} available rooms for the time window [{}, {}).", rooms.size(), startTime, endTime);
+        return ResponseEntity.ok(rooms);
     }
+
+
+    /**
+     * Books a specific room selected by the user from the available rooms list.
+    */
+    @PostMapping("/book")
+    public ResponseEntity<BookingResponseDto> bookSpecificRoom(
+            @RequestParam Long roomId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+
+
+        log.info("Booking request received for room {} from {} to {}.", roomId, startTime, endTime);
+        BookingResponseDto response = cspSchedulingService.bookRoom(
+                roomId, startTime, endTime
+        );
+        if (!response.success) {
+            log.warn("Booking failed for room {}: {}", roomId, response.message);
+            return ResponseEntity.badRequest().body(response);
+        }
+        log.info("Booking successful for room {}: {}", roomId, response);
+        return ResponseEntity.ok(response);
+    }
+
 }

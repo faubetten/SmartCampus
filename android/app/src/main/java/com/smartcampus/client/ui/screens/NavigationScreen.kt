@@ -17,14 +17,15 @@ import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Logout
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationScreen(
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    initialTargetNodeId: Long? = null,
+    targetRoomLabel: String? = null
+
 ) {
     // This screen collects route parameters and renders the backend's path.
     val context = LocalContext.current
@@ -38,7 +39,9 @@ fun NavigationScreen(
     }
 
     var startId by remember { mutableStateOf("1") }
-    var targetId by remember { mutableStateOf("3") }
+    var targetId by remember (initialTargetNodeId){
+        mutableStateOf(initialTargetNodeId?.toString() ?: "3")
+    }
     var accessibleOnly by remember { mutableStateOf(false) }
     // Compose state drives the loading indicator, errors, and displayed route.
     var routeNodes by remember { mutableStateOf<List<CampusNode>>(emptyList()) }
@@ -49,12 +52,16 @@ fun NavigationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("SmartCampus Navigation (A*)") },
+                title = {
+                    if(targetRoomLabel != null){
+                            ("Destination: Room $targetRoomLabel (Node #$initialTargetNodeId)")
+                    } else { "SmartCampus Navigation (A*)"}
+                },
                 actions = {
                     IconButton(onClick = {
                         tokenManager?.clearToken()
                         onLogout()
-                    }){
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Logout"
@@ -62,6 +69,7 @@ fun NavigationScreen(
                     }
                 }
             )
+
         }
     ) { paddingValues ->
         Column(

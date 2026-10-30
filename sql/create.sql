@@ -21,7 +21,6 @@ DROP TABLE IF EXISTS roles CASCADE;
 
 -- -----------------------------------------------------------------------------
 -- 1. SECURITY & IDENTITY MODULE (RBAC & GDPR Compliance)
--- Satisfies Semestre 5 Security requirements and Semestre 3 GDPR guidelines
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE roles (
@@ -41,12 +40,10 @@ CREATE TABLE users (
 
 -- -----------------------------------------------------------------------------
 -- 2. SPATIAL GRAPH MODULE (Discrete Math & AI A* Routing)
--- Satisfies Semestre 3 Discrete Math (Graph Theory) and Semestre 5 AI (A* Search)
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE buildings (
     building_id SERIAL PRIMARY KEY,
-    code VARCHAR(10) NOT NULL UNIQUE,     -- e.g., 'B1', 'TOWER-A'
     name VARCHAR(100) NOT NULL
 );
 
@@ -71,7 +68,6 @@ CREATE TABLE campus_edges (
 
 -- -----------------------------------------------------------------------------
 -- 3. FACILITIES & CSP SCHEDULING MODULE
--- Satisfies Semestre 5 AI (Constraint Satisfaction Problem room allocation)
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE rooms (
@@ -97,7 +93,6 @@ CREATE TABLE room_equipment (
 
 -- -----------------------------------------------------------------------------
 -- 4. RESERVATIONS & ACCESS CONTROL MODULE (Hardware & GDPR)
--- Satisfies Semestre 3 Mobile (QR/BLE Check-In) and Semestre 5 Security
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE reservations (
@@ -127,7 +122,7 @@ CREATE TABLE access_logs (
 );
 
 -- -----------------------------------------------------------------------------
--- 5. ANALYTICAL VIEWS (Demonstrates SQL Mastery for DB Evaluation)
+-- 5. ANALYTICAL VIEWS 
 -- -----------------------------------------------------------------------------
 
 -- View: Active Room Reservations for real-time status checks

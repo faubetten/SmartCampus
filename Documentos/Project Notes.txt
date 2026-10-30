@@ -60,13 +60,14 @@ volumes: -> cria ficheiro de volumes
 
 Terminal:
 
-docker compose up -d-> encontra e corre compose atualizado
+docker compose up -d-> encontra e corre compose 
+docker compose up --build -d -> encontra e corre compose atualizado
 docker compose down  -v-> para containers
 docker compose build --no-cache -> full wipe
 docker stop -> para container
 docker rm -> apaga container
 docker ps -> containers view
-docker compose -f logs -f api-node-1 -> logs do container
+docker compose logs -f api-node-1 -> logs do container
 
 
 

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
-import com.smartcampus.client.data.model.RegisterRequest
+import com.smartcampus.client.data.requestDto.RegisterRequestDto
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
 
@@ -136,8 +136,8 @@ fun RegisterScreen(
                     isLoading = true
                     errorMessage = null
                     try {
-                        val response = apiService?.register(
-                            RegisterRequest(name.trim(), email.trim(), password)
+                        val response = apiService?.registerUser(
+                            RegisterRequestDto(name.trim(), email.trim(), password)
                         )
                         if (response != null && response.isSuccessful) {
                             successMessage = "Account created! Redirecting to login..."

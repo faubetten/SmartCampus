@@ -1,13 +1,16 @@
 package com.smartcampus.controller;
-
+import com.smartcampus.dto.ForgotPasswordRequestDto;
+import com.smartcampus.dto.ForgotPasswordResponseDto;
+import com.smartcampus.dto.JwtResponseDto;
+import com.smartcampus.dto.LoginRequestDto;
+import com.smartcampus.dto.RegisterRequestDto;
+import com.smartcampus.dto.ResetPasswordRequestDto;
 import com.smartcampus.model.Role;
 import com.smartcampus.model.User;
 import com.smartcampus.repository.RoleRepository;
 import com.smartcampus.repository.UserRepository;
 import com.smartcampus.security.JwtTokenProvider;
-
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,42 +51,6 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // --- DTOs ---
-
-    public static class LoginRequest {
-        // Credentials received from the login form.
-        public String email;
-        public String password;
-    }
-
-    public static class RegisterRequest {
-        // Basic fields needed to create a student account.
-        public String name;
-        public String email;
-        public String password;
-    }
-
-    public static class JwtResponse {
-        public String accessToken;
-        public String tokenType = "Bearer";
-
-        public JwtResponse(String accessToken) {
-            this.accessToken = accessToken;
-        }
-    }
-
-    public static class ForgotPasswordRequest {
-        // Email address for which a password reset is requested.
-        public String email;
-    }
-
-    public static class ResetPasswordRequest {
-        // Token and new password for resetting the account.
-        public String email;
-        public String otp;
-        public String newPassword;
-    }
-
     private static class PasswordResetToken {
         String token;
         LocalDateTime expiryTime;
@@ -98,20 +65,10 @@ public class AuthController {
         }
     }
 
-    public static class ForgotPasswordResponse {
-        public String message;
-        public String debugOtp;
-
-        public ForgotPasswordResponse(String message, String debugOtp) {
-            this.message = message;
-            this.debugOtp = debugOtp;
-        }
-    }
-
     // --- Endpoints ---
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequest) {
         System.out.println("[HIT] /api/auth/login reached for email: " + loginRequest.email);
 
 
@@ -136,7 +93,7 @@ public class AuthController {
             String jwt = tokenProvider.generateToken(authentication);
 
             System.out.println("[SUCCESS] JWT generated successfully for: " + loginRequest.email);
-            return ResponseEntity.ok(new JwtResponse(jwt));
+            return ResponseEntity.ok(new JwtResponseDto(jwt));
 
         } catch (Exception e) {
             System.out.println("[ERROR] Authentication failed for " + loginRequest.email + ": " + e.getMessage());
@@ -145,7 +102,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequest) {
         // Public registration always creates a least-privileged student account.
         if (userRepository.findByEmail(registerRequest.email).isPresent()) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
@@ -187,7 +144,7 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
         if (request.email == null || request.email.isBlank()) {
             return ResponseEntity.badRequest().body("Error: Email is required.");
         }
@@ -210,7 +167,7 @@ public class AuthController {
         System.out.println("[PASSWORD RESET] Code: " + otp + " (Expires in 15 mins)");
         System.out.println("==================================================");
 
-        return ResponseEntity.ok(new ForgotPasswordResponse(
+        return ResponseEntity.ok(new ForgotPasswordResponseDto(
                 "Password reset code generated. Enter the code below to proceed.",
                 otp
         ));
@@ -218,7 +175,7 @@ public class AuthController {
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequestDto request) {
         if (request.email == null || request.otp == null || request.newPassword == null) {
             return ResponseEntity.badRequest().body("Error: Email, OTP, and new password are required.");
         }

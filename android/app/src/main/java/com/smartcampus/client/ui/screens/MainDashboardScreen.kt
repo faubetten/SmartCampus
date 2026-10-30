@@ -4,11 +4,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.smartcampus.client.data.dto.RoomDetailsDto
 import com.smartcampus.client.ui.navigation.BottomNavItem
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 
@@ -21,6 +25,7 @@ fun MainDashboardScreen(
     val items = listOf(BottomNavItem.Navigation, BottomNavItem.Scheduling)
     val navBackStackEntry by innerNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    var selectedTargetRoom by remember { mutableStateOf<RoomDetailsDto?>(null) }
 
     Scaffold(
         bottomBar = {
@@ -53,10 +58,26 @@ fun MainDashboardScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Navigation.route) {
-                NavigationScreen(onLogout = onLogout)
+                NavigationScreen(
+                    onLogout = onLogout,
+                    initialTargetNodeId = selectedTargetRoom?.nodeId,
+                    targetRoomLabel = selectedTargetRoom?.roomNumber
+                )
             }
             composable(BottomNavItem.Scheduling.route) {
-                SchedulingScreen(onLogout = onLogout)
+                SchedulingScreen(
+                    onLogout = onLogout,
+                    onNavigateToBookedRoom = { room, _ ->
+                        selectedTargetRoom = room
+                        innerNavController.navigate(BottomNavItem.Navigation.route){
+                            popUpTo(innerNavController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
             }
         }
     }

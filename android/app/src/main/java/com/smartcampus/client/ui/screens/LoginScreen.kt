@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smartcampus.client.api.NetworkClient
-import com.smartcampus.client.data.model.LoginRequest
+import com.smartcampus.client.data.requestDto.LoginRequestDto
 import com.smartcampus.client.security.TokenManager
 import com.smartcampus.client.ui.theme.SmartCampusClientTheme
 import kotlinx.coroutines.launch
@@ -117,7 +117,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit = {},
                     isLoading = true
                     try {
                         // The token is saved only after the server confirms the credentials.
-                        val response = apiService?.login(LoginRequest(email.trim(), password))
+                        val response = apiService?.authenticateUser(LoginRequestDto(email.trim(), password))
                         if (response != null && response.isSuccessful && response.body() != null) {
                             val token = response.body()!!.accessToken
                             tokenManager?.saveToken(token)
