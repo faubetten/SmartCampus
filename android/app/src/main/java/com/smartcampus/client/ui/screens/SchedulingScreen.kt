@@ -29,6 +29,13 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+
+enum class BookingStep {
+    SEARCH,
+    DETAILS,
+    CONFIRMED
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulingScreen(
@@ -58,6 +65,7 @@ fun SchedulingScreen(
     var startTimeIso by remember { mutableStateOf(now.format(isoFormatter)) }
     var endTimeIso by remember { mutableStateOf(now.plusHours(2).format(isoFormatter)) }
 
+    var currentStep by remember { mutableStateOf(BookingStep.SEARCH) }
     var isLoading by remember { mutableStateOf(false) }
     var hasSearched by remember { mutableStateOf(false) }
     var availableRooms by remember { mutableStateOf<List<RoomDetailsDto>?>(null) }
@@ -71,14 +79,14 @@ fun SchedulingScreen(
                 title = {
                     when {
                         confirmedBooking != null -> Text("Booking Confirmed")
-                        selectedRoom != null -> Text("Room ${selectedRoom!!.roomNumber} Details")
+                        selectedRoom != null -> Text("Room ${selectedRoom?.roomNumber ?: ""} Details")
                         else -> Text("Room Search")
                     } },
 
 
                 navigationIcon = {
                     if (selectedRoom!= null && confirmedBooking == null) {
-                        IconButton(onClick = {selectedRoom = null; errorMessage = null}){
+                        IconButton(onClick = {selectedRoom = null; errorMessage = null; hasSearched = false; currentStep = BookingStep.SEARCH}){
                             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
 
                         }
@@ -111,260 +119,295 @@ fun SchedulingScreen(
             // ==========================================
             // RESERVATION CONFIRMED
             // ==========================================
-            if (confirmedBooking != null && confirmedBooking!!.room != null) {
-                val booking = confirmedBooking!!
-                val room = booking.room!!
+            when (currentStep) {
+                BookingStep.CONFIRMED -> {
+                    val booking = confirmedBooking
+                    val room = booking?.roomDetails ?: selectedRoom
 
 
-                //TODO: make into a component
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = "Confirmed",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(32.dp)
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Column {
-                                Text(
-                                    text = "Reservation #${booking.reservationId} Confirmed",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "Status: ${booking.status}",
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider()
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text("Facility: Room ${room.roomNumber} (${room.roomType})", style = MaterialTheme.typography.titleMedium)
-                        Text("Building: ${room.buildingName ?: "Main Building"}", style = MaterialTheme.typography.bodyMedium)
-                        Text("Floor: Floor ${room.floorNumber ?: 0} (Map Node #${room.nodeId})", style = MaterialTheme.typography.bodyMedium)
-                        Text("Capacity: ${room.capacity} seats", style = MaterialTheme.typography.bodyMedium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Start: ${booking.startTime}", style = MaterialTheme.typography.bodySmall)
-                        Text("End: ${booking.endTime}", style = MaterialTheme.typography.bodySmall)
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        Button(
-                            onClick = {
-                                onNavigateToBookedRoom(room, booking.reservationId ?: 0L)
-                            },
+                    if (room != null) {//TODO: make into a component
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(Icons.Default.Place, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Visualize Building & Start Navigation")
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedButton(
-                            onClick = {
-                                confirmedBooking = null
-                                selectedRoom = null
-                                hasSearched = false
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Book Another Room")
-                        }
-                    }
-                }
-                return@Column
-            }
-
-            // ==========================================
-            // ROOM DETAILS & CONFIRMATION
-            // ==========================================
-            if (selectedRoom != null) {
-                val room = selectedRoom!!
-
-
-                //TODO: make into a component
-                Card(
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Room ${room.roomNumber}",
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Bold
-                            )
-                            SuggestionChip(
-                                onClick = {},
-                                label = { Text(room.roomType) }
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = room.buildingName ?: "Campus Building",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Location: Floor ${room.floorNumber ?: 0} • Graph Node #${room.nodeId}")
-                        Text("Coordinates: (${room.coordX ?: 0.0}m, ${room.coordY ?: 0.0}m)")
-                        Text("Maximum Capacity: ${room.capacity} people")
-
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider()
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = "Installed Equipment",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        if (room.equipment.isEmpty()) {
-                            Text("Standard classroom furniture (No special equipment)", style = MaterialTheme.typography.bodyMedium)
-                        } else {
-                            room.equipment.forEach { item ->
-                                Text("• $item", style = MaterialTheme.typography.bodyMedium)
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider()
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = "Selected Time Window",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold
-                        )
-
-                        //TODO: Better time format
-                        Text("From: $startTimeIso", style = MaterialTheme.typography.bodySmall)
-                        Text("To:   $endTimeIso", style = MaterialTheme.typography.bodySmall)
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Button(
-                            onClick = {
-                                scope.launch {
-                                    isLoading = true
-                                    errorMessage = null
-                                    try {
-                                        val response = apiService?.bookSpecificRoom(
-                                            roomId = room.roomId,
-                                            startTime = startTimeIso,
-                                            endTime = endTimeIso
+                            Column(modifier = Modifier.padding(20.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = "Confirmed",
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(32.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Column {
+                                        Text(
+                                            text = "Reservation #${booking?.reservationId} Confirmed",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold
                                         )
-                                        if (response!!.isSuccessful && response.body() != null) {
-                                            confirmedBooking = response.body()
-                                        } else {
-                                            errorMessage = "Booking failed: ${response.errorBody()?.string() ?: "HTTP ${response.code()}"}"
-                                        }
-                                    } catch (e: Exception) {
-                                        errorMessage = "Network error: ${e.localizedMessage}"
-                                    } finally {
-                                        isLoading = false
+                                        Text(
+                                            text = "Status: ${booking?.status}",
+                                            style = MaterialTheme.typography.bodySmall
+                                        )
                                     }
                                 }
-                            },
-                            enabled = !isLoading,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                        ) {
-                            if (isLoading) {
-                                CircularProgressIndicator(
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier.size(24.dp)
+
+                                Spacer(modifier = Modifier.height(16.dp))
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Text(
+                                    "Facility: Room ${room.roomNumber} (${room.roomType})",
+                                    style = MaterialTheme.typography.titleMedium
                                 )
-                            } else {
-                                Text("Schedule Reservation")
+                                Text(
+                                    "Building: ${room.buildingName ?: "Main Building"}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    "Floor: Floor ${room.floorNumber ?: 0} (Map Node #${room.nodeId})",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    "Capacity: ${room.capacity} seats",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Start: ${booking?.startTime}",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    "End: ${booking?.endTime}",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                Button(
+                                    onClick = {
+                                        onNavigateToBookedRoom(room, booking?.reservationId ?: 0L)
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Icon(Icons.Default.Place, contentDescription = null)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Visualize Building & Start Navigation")
+                                }
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                OutlinedButton(
+                                    onClick = {
+                                        confirmedBooking = null
+                                        selectedRoom = null
+                                        hasSearched = false
+                                        currentStep = BookingStep.SEARCH
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Book Another Room")
+                                }
                             }
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        TextButton(
-                            onClick = { selectedRoom = null; errorMessage = null },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Back to Available Rooms")
                         }
                     }
                 }
 
-                errorMessage?.let { error ->
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = error, color = MaterialTheme.colorScheme.error)
-                }
-                return@Column
-            }
+                // ==========================================
+                // ROOM DETAILS & CONFIRMATION
+                // ==========================================
+                BookingStep.DETAILS -> {
+                    val room = selectedRoom
 
-            // ==========================================
-            // PREFERENCES & AVAILABLE ROOMS LIST
-            // ==========================================
-            Text(
-                text = "1. Set Your Room Preferences",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                OutlinedTextField(
-                    value = capacityText,
-                    onValueChange = { capacityText = it },
-                    label = { Text("Min Capacity") },
-                    singleLine = true,
-                    modifier = Modifier.weight(0.45f)
-                )
-
-                ExposedDropdownMenuBox(
-                    expanded = dropdownExpanded,
-                    onExpandedChange = { dropdownExpanded = it },
-                    modifier = Modifier.weight(0.55f)
-                ) {
-                    OutlinedTextField(
-                        value = selectedRoomType,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Room Type") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded) },
-                        modifier = Modifier
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = dropdownExpanded,
-                        onDismissRequest = { dropdownExpanded = false }
-                    ) {
-                        roomTypes.forEach { type ->
-                            DropdownMenuItem(
-                                text = { Text(type) },
-                                onClick = {
-                                    selectedRoomType = type
-                                    dropdownExpanded = false
+                    if (room != null) {//TODO: make into a component
+                        Card(
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(20.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Room ${room.roomNumber}",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    SuggestionChip(
+                                        onClick = {},
+                                        label = { Text(room.roomType) }
+                                    )
                                 }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = room.buildingName ?: "Campus Building",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("Location: Floor ${room.floorNumber ?: 0} • Graph Node #${room.nodeId}")
+                                Text("Coordinates: (${room.coordX ?: 0.0}m, ${room.coordY ?: 0.0}m)")
+                                Text("Maximum Capacity: ${room.capacity} people")
+
+                                Spacer(modifier = Modifier.height(16.dp))
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                Text(
+                                    text = "Installed Equipment",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                if (room.equipment.isEmpty()) {
+                                    Text(
+                                        "Standard classroom furniture (No special equipment)",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                } else {
+                                    room.equipment.forEach { item ->
+                                        Text("• $item", style = MaterialTheme.typography.bodyMedium)
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(16.dp))
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                Text(
+                                    text = "Selected Time Window",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+
+                                //TODO: Better time format
+                                Text("From: $startTimeIso", style = MaterialTheme.typography.bodySmall)
+                                Text("To:   $endTimeIso", style = MaterialTheme.typography.bodySmall)
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Button(
+                                    onClick = {
+                                        scope.launch {
+                                            isLoading = true
+                                            errorMessage = null
+                                            try {
+                                                val response = apiService?.bookSpecificRoom(
+                                                    roomId = room.roomId,
+                                                    startTime = startTimeIso,
+                                                    endTime = endTimeIso
+                                                )
+                                                if (response != null && response.isSuccessful && response.body() != null) {
+                                                    confirmedBooking = response.body()
+                                                    currentStep = BookingStep.CONFIRMED
+                                                    selectedRoom = null
+                                                    hasSearched = false
+                                                } else if (response != null) {
+                                                    errorMessage = "Booking failed: ${
+                                                        response.errorBody()
+                                                            ?.string() ?: "HTTP ${response.code()}"
+                                                    }"
+                                                } else {
+                                                    errorMessage = "Network client unavailable."
+                                                }
+                                            } catch (e: Exception) {
+                                                errorMessage = "Network error: ${e.localizedMessage}"
+                                            } finally {
+                                                isLoading = false
+                                            }
+                                        }
+                                    },
+                                    enabled = !isLoading,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(50.dp)
+                                ) {
+                                    if (isLoading) {
+                                        CircularProgressIndicator(
+                                            color = MaterialTheme.colorScheme.onPrimary,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    } else {
+                                        Text("Schedule Reservation")
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                TextButton(
+                                    onClick = { selectedRoom = null; errorMessage = null; currentStep = BookingStep.SEARCH },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Back to Available Rooms")
+                                }
+                            }
+                        }
+                    }
+
+                    errorMessage?.let { error ->
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(text = error, color = MaterialTheme.colorScheme.error)
+                    }
+                    return@Column
+                }
+
+                // ==========================================
+                // PREFERENCES & AVAILABLE ROOMS LIST
+                // ==========================================
+                BookingStep.SEARCH -> {
+                    Text(
+                        text = "1. Set Your Room Preferences",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = capacityText,
+                            onValueChange = { capacityText = it },
+                            label = { Text("Min Capacity") },
+                            singleLine = true,
+                            modifier = Modifier.weight(0.45f)
+                        )
+
+                        ExposedDropdownMenuBox(
+                            expanded = dropdownExpanded,
+                            onExpandedChange = { dropdownExpanded = it },
+                            modifier = Modifier.weight(0.55f)
+                        ) {
+                            OutlinedTextField(
+                                value = selectedRoomType,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Room Type") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded) },
+                                modifier = Modifier
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                                    .fillMaxWidth()
                             )
+                            ExposedDropdownMenu(
+                                expanded = dropdownExpanded,
+                                onDismissRequest = { dropdownExpanded = false }
+                            ) {
+                                roomTypes.forEach { type ->
+                                    DropdownMenuItem(
+                                        text = { Text(type) },
+                                        onClick = {
+                                            selectedRoomType = type
+                                            dropdownExpanded = false
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -414,8 +457,9 @@ fun SchedulingScreen(
                                 startTime = startTimeIso,
                                 endTime = endTimeIso
                             )
-                            if (response != null && response.isSuccessful && response.body() != null) {
-                                availableRooms = response.body()!!
+                            val body = response?.body()
+                            if (response != null && response.isSuccessful && body != null) {
+                                availableRooms = body
                             } else if (response != null) {
                                 availableRooms = null
                                 errorMessage = "Search failed: HTTP ${response.code()} - ${response.errorBody()?.string()}"
@@ -473,14 +517,15 @@ fun SchedulingScreen(
 
             if (hasSearched && !isLoading) {
                 Spacer(modifier = Modifier.height(24.dp))
+                val rooms = availableRooms
                 Text(
-                    text = "2. Select an Available Room (${availableRooms?.size} found)",
+                    text = "2. Select an Available Room (${rooms?.size ?: 0} found)",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                if (availableRooms!!.isEmpty()) {
+                if (rooms.isNullOrEmpty()) {
                     Card(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                         modifier = Modifier.fillMaxWidth()
@@ -492,13 +537,18 @@ fun SchedulingScreen(
                         )
                     }
                 } else {
-                    availableRooms!!.forEach { room ->
+                    rooms.forEach { room ->
                         //TODO: make into a component
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 6.dp)
-                                .clickable { selectedRoom = room },
+                                .clickable {
+                                    selectedRoom = room
+                                    currentStep = BookingStep.DETAILS
+                                    hasSearched = false
+                                    errorMessage = null
+                                },
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {

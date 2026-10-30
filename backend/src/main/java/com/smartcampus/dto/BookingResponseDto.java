@@ -11,9 +11,11 @@ public class BookingResponseDto {
         public String message;
         public Long reservationId;
         public RoomDetailsDto roomDetails;
-        public LocalDateTime startTime;
-        public LocalDateTime endTime;
+        public String startTime;
+        public String endTime;
         public String status;
+
+        public BookingResponseDto() {}
 
         public BookingResponseDto(boolean success, String message, Reservation reservation, RoomDetailsDto roomDetails) {
             this.success = success;
@@ -21,8 +23,8 @@ public class BookingResponseDto {
             this.roomDetails = roomDetails;
             if (reservation != null) {
                 this.reservationId = reservation.getId();
-                this.startTime = reservation.getStartTime();
-                this.endTime = reservation.getEndTime();
+                this.startTime = reservation.getStartTime() != null ? reservation.getStartTime().toString() : null;
+                this.endTime = reservation.getEndTime() != null ? reservation.getEndTime().toString() : null;
                 this.status = reservation.getStatus();
             }
         }

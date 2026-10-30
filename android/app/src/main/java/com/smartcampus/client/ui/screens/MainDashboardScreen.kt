@@ -54,7 +54,7 @@ fun MainDashboardScreen(
     ) { innerPadding ->
         NavHost(
             navController = innerNavController,
-            startDestination = BottomNavItem.Navigation.route,
+            startDestination = BottomNavItem.Scheduling.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Navigation.route) {
