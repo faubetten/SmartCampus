@@ -168,8 +168,6 @@ SmartCampus/
 │   ├── populate.sql          # Initial seed graph, rooms, equipment & demo users
 │   └── queries.sql           # Reference analytical SQL queries
 ├── Documentos/               # Project reports, architecture notes & TODOs
-├── test_db.py                # Python database connectivity & schema verification script
-└── test_endpoints.py         # Python end-to-end API & load-balancer verification script
 ```
 
 ---
@@ -181,7 +179,6 @@ SmartCampus/
 * **Docker Desktop** (or Docker Engine + Docker Compose)
 * **Android Studio** (Ladybug / Koala or newer, with Android SDK 35)
 * **Java Development Kit (JDK) 21** *(optional, for running Maven outside Docker)*
-* **Python 3.x** *(optional, for running automated verification scripts)*
 
 ---
 
@@ -292,17 +289,7 @@ Full CRUD (`GET`, `POST`, `PUT`, `DELETE`) controllers are available under:
 
 ## 9. Testing & Verification
 
-### 1. Python Database & Endpoint Smoke Tests
-
-From the root directory, install the test dependencies and run the verification scripts:
-
-```bash
-pip install psycopg2-binary requests
-python test_db.py
-python test_endpoints.py
-```
-
-### 2. Backend JUnit 5 & MockMvc Suite
+### 1. Backend JUnit 5 & MockMvc Suite
 
 Run the automated CRUD and controller test suite via Maven:
 
@@ -311,7 +298,7 @@ cd backend
 mvn test
 ```
 
-### 3. Postman Collection
+### 2. Postman Collection
 
 Import the collection and environments from the `postman/` directory into Postman:
 

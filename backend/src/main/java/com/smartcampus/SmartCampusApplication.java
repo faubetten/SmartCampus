@@ -38,8 +38,10 @@ public class SmartCampusApplication {
             Role professorRole = roleRepository.findByRoleName("PROFESSOR").orElse(null);
             Role adminRole = roleRepository.findByRoleName("ADMIN").orElse(null);
 
+            //Fake password for demonstration purposes. In a real application, this should be changed immediately after first login.
             String defaultPassword = "SecurePass123!";
 
+            // Fake accounts for demonstration purposes. In a real application, these should be changed immediately after first login.
             // These accounts make the development and demonstration environment usable.
             createIfNotExists(userRepository, passwordEncoder, "João Silva", "joao.silva@student.universidadeeuropeia.pt", defaultPassword, studentRole);
             createIfNotExists(userRepository, passwordEncoder, "Beatriz Costa", "beatriz.costa@student.universidadeeuropeia.pt", defaultPassword, studentRole);
