@@ -18,7 +18,6 @@ melohrar UI
 splash screen
 mapeamento de salas-
 enriquecer conceit de pathing usando visualizacao campus e localização--
-Criar screen de sala onde se pode reservar e visualizar---
 visualizar os 2 andares-
 visualizar pathing por linha-
 Salas interativas para ver info e fazer reservas
@@ -28,12 +27,11 @@ Update gradle api URL once app is deployed and running on cloud
 Backend:
 
 Aprofundar algoritmos de Navegação e agendamento:--
-Tirar tempo para comentar e entender os algoritmos
-Otimizar algoritmos	
+Tirar tempo para comentar e entender os algoritmos-
+Otimizar algoritmos--
 Ai em Python--
 Aprofundar Equipamentos e roles beacons e access logs-
 ALTERAR SEED DATA PARA SUPORTAR CAMPUS IADE: SALAS, NODES, NAVEGACAO, BUILDINGS  
-Fazer com que scheduling de todas as salas validas e de a cada uma opcao de fazer reserva---
 Mudar navegação usar localização de utilizador e de salas/locais em vez de nodes
 Eventual 2FA?
 
@@ -45,7 +43,6 @@ features IOT -> Codigo QR para validar reserva--
 User settings-
 Admin features: add remove, equipment, buildings-
 update postman + documentation
-update readme
 update gitignore
 replica synced DB-
 
