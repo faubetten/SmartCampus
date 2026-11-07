@@ -19,4 +19,6 @@ target/
 .vscode/
 
 #Documents
-Documentos/
+Documentos/*
+*.txt
+*.docx

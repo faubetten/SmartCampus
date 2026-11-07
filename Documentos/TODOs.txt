@@ -43,7 +43,6 @@ features IOT -> Codigo QR para validar reserva--
 User settings-
 Admin features: add remove, equipment, buildings-
 update postman + documentation
-update readme
 update gitignore
 replica synced DB-
 
